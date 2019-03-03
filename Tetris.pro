@@ -34,6 +34,17 @@ HEADERS += \
 FORMS += \
         tetrismainwindow.ui
 
+INCLUDEPATH += /home/cfcv/opencv/build/include/opencv
+LIBS += -L/home/cfcv/opencv/build/lib \
+    -lopencv_core \
+    -lopencv_imgproc \
+    -lopencv_imgcodecs \
+    -lopencv_highgui \
+    -lopencv_videoio \
+    -lopencv_features2d \
+    -lopencv_calib3d \
+    -lopencv_objdetect
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
