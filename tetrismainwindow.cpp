@@ -35,7 +35,6 @@ void TetrisMainWindow::cameraThread(){
                 // Invert Blue and Red color channels
                 cvtColor(frame,frame,CV_BGR2RGB);
                 crop = cv::Mat(frame, cv::Rect(0,height/2,width,height/2)).clone();
-                std::cout << crop.rows << " " << crop.cols << std::endl;
                 // Convert to Qt image
                 QImage img= QImage((const unsigned char*)(crop.data),crop.cols,crop.rows,QImage::Format_RGB888);
                 // Display on label

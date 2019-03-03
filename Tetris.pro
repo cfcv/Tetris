@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        tetrismainwindow.cpp
+        tetrismainwindow.cpp \
+    paintwidget.cpp
 
 HEADERS += \
-        tetrismainwindow.h
+        tetrismainwindow.h \
+    paintwidget.h
 
 FORMS += \
         tetrismainwindow.ui
