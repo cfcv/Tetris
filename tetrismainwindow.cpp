@@ -23,19 +23,21 @@ TetrisMainWindow::~TetrisMainWindow()
 }
 
 void TetrisMainWindow::cameraThread(){
-    //VideoCapture cap(0);
-    //#int width=cap.get(CV_CAP_PROP_FRAME_WIDTH);
-    //int height=cap.get(CV_CAP_PROP_FRAME_HEIGHT);
+    int width=cap.get(CV_CAP_PROP_FRAME_WIDTH);
+    int height=cap.get(CV_CAP_PROP_FRAME_HEIGHT);
     //QString cascadePath = "";
     if (cap.isOpened()) {
-            Mat frame;
+            Mat frame, crop;
             if (cap.read(frame)) {   // Capture a frame
+
                 // Flip to get a mirror effect
                 flip(frame,frame,1);
                 // Invert Blue and Red color channels
                 cvtColor(frame,frame,CV_BGR2RGB);
+                crop = cv::Mat(frame, cv::Rect(0,height/2,width,height/2)).clone();
+                std::cout << crop.rows << " " << crop.cols << std::endl;
                 // Convert to Qt image
-                QImage img= QImage((const unsigned char*)(frame.data),frame.cols,frame.rows,QImage::Format_RGB888);
+                QImage img= QImage((const unsigned char*)(crop.data),crop.cols,crop.rows,QImage::Format_RGB888);
                 // Display on label
                 ui->image_label->setPixmap(QPixmap::fromImage(img));
                 // Resize the label to fit the image
