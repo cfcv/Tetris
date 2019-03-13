@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         tetrismainwindow.cpp \
-    paintwidget.cpp
+    paintwidget.cpp \
+    test.cpp
 
 HEADERS += \
         tetrismainwindow.h \
-    paintwidget.h
+    paintwidget.h \
+    test.h
 
 FORMS += \
         tetrismainwindow.ui
@@ -51,3 +53,8 @@ LIBS += -L/home/cfcv/opencv/build/lib \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    ressourses.qrc
+
+DISTFILES +=

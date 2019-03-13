@@ -18,11 +18,17 @@ public:
     explicit TetrisMainWindow(QWidget *parent = nullptr);
     ~TetrisMainWindow();
 
-private slots:
+public slots:
     void cameraThread();
+
+signals:
+    void handDetection(int);
+
 private:
     Ui::TetrisMainWindow *ui;
-    cv::VideoCapture cap;
+    cv::VideoCapture cap_;
+    cv::CascadeClassifier hand_cascade_;
+    int direction_ = 0; // -1 -> gauche, 0 -> rien, 1 -> droite
 };
 
 #endif // TETRISMAINWINDOW_H
