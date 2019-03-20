@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,12 +28,12 @@ SOURCES += \
         main.cpp \
         tetrismainwindow.cpp \
     paintwidget.cpp \
-    test.cpp
+    cellule.cpp
 
 HEADERS += \
         tetrismainwindow.h \
     paintwidget.h \
-    test.h
+    cellule.h
 
 FORMS += \
         tetrismainwindow.ui
@@ -47,8 +47,8 @@ LIBS += -L/home/cfcv/opencv/build/lib \
     -lopencv_videoio \
     -lopencv_features2d \
     -lopencv_calib3d \
-    -lopencv_objdetect
-
+    -lopencv_objdetect \
+    -lGL -lGLU
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
