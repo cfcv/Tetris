@@ -1,15 +1,55 @@
 #include "cellule.h"
 
-cellule::cellule(double c1[],double c2[],double c3[],double c4[])
+cellule::cellule(QVector3D p1,QVector3D p2,QVector3D p3,QVector3D p4)
+{                           
+            coordinates_.push_back(p1);
+            coordinates_.push_back(p2);
+            coordinates_.push_back(p3);
+            coordinates_.push_back(p4);
+            statue_=false;
+}
+void cellule::draw()
 {
-        for(int j=0;j<3;j++)
-            coordinates_[0][j]=c1[j];
-        for(int j=0;j<3;j++)
-            coordinates_[1][j]=c2[j];
-        for(int j=0;j<3;j++)
-            coordinates_[2][j]=c3[j];
-        for(int j=0;j<3;j++)
-            coordinates_[3][j]=c4[j];
+    glClear(GL_DEPTH_BUFFER_BIT);
 
-    statue_=false;
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -35.0f);
+    glBegin(GL_QUADS);
+    glColor3ub(0, 0, 255);
+
+     // face d'en bas
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y(),   coordinates_[0].z());
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
+    glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z());
+    glVertex3f(  coordinates_[3].x(),   coordinates_[3].y(),   coordinates_[3].z());
+     //face d'en haux
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y()+10,   coordinates_[1].z());
+    glVertex3f(  coordinates_[2].x(),   coordinates_[2].y()+10,   coordinates_[2].z());
+    glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z());
+    // face en face
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z()+10);
+    glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z()+10);
+    glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z());
+    // face derriere
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z()-10);
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
+    glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z());
+    glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z()-10);
+    // face a gauche
+
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y()+10,   coordinates_[1].z());
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
+    glVertex3f(  coordinates_[0].x(),   coordinates_[0].y(),   coordinates_[0].z());
+    glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
+    // face a droite
+
+    glVertex3f(  coordinates_[1].x()+10,   coordinates_[1].y()+10,   coordinates_[1].z());
+    glVertex3f(  coordinates_[0].x()+10,   coordinates_[0].y()+10,   coordinates_[0].z());
+    glVertex3f(  coordinates_[0].x()+10,   coordinates_[0].y(),   coordinates_[0].z());
+    glVertex3f(  coordinates_[1].x()+10,   coordinates_[1].y(),   coordinates_[1].z());
+    //glColor3ub(255, 255, 0);
+
+    glEnd();
 }

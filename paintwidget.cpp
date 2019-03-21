@@ -2,6 +2,9 @@
 #include <QPainter>
 #include <QDebug>
 #include <QGLWidget>
+#include<QColor>
+#include <tuple>
+#include <math.h>
 
 // Declarations des constantes
 const unsigned int WIN_WIDTH  = 1600;
@@ -55,11 +58,12 @@ void PaintWidget::paintGL()
 
     drawEnvironment(10);
     glLoadIdentity();
+//   // cellules_[2][2]->draw();
+    creatTetramino();
+//   // t->draw();
+//    for(int i=0;i<t->tetramino_.size();i++)
+//    t->tetramino_[i].draw();
   //  glTranslatef(0.0, 0.0, -35.0f);
-
-    drawCube();
-   // Draw();
-
 
 }
 void PaintWidget::resizeGL(int width, int height)
@@ -139,34 +143,22 @@ for(int j = 0; j < 9; j++) // top wall, 5 squares across
         glVertex3f(-(cubeWidth * 3.5) + cubeWidth*j, -(cubeWidth * 2.5), -cubeWidth - cubeWidth*i);
         glVertex3f(-(cubeWidth * 3.5) + cubeWidth*j, -(cubeWidth * 2.5), 0.0 - cubeWidth*i);
     glEnd();
-    double tab1[3];
-    double tab2[3];
-    double tab3[3];
-    double tab4[3];
-    tab1[0]=-(cubeWidth * 4.5) + cubeWidth*j;
-    tab1[1]= -(cubeWidth * 2.5);
-    tab1[2]=0.0 - cubeWidth*i;
 
-    tab2[0]=-(cubeWidth * 4.5) + cubeWidth*j;
-    tab2[1]= -(cubeWidth * 2.5);
-    tab2[2]=-cubeWidth - cubeWidth*i;
+    QVector3D p1(-(cubeWidth * 4.5) + cubeWidth*j,-(cubeWidth * 2.5),0.0 - cubeWidth*i);
+    QVector3D p2(-(cubeWidth * 4.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
+    QVector3D p3(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
+    QVector3D p4(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),0.0 - cubeWidth*i);
 
-    tab3[0]=-(cubeWidth * 3.5) + cubeWidth*j;
-    tab3[1]= -(cubeWidth * 2.5);
-    tab3[2]=-cubeWidth - cubeWidth*i;
 
-    tab4[0]=-(cubeWidth * 3.5) + cubeWidth*j;
-    tab4[1]= -(cubeWidth * 2.5);
-    tab4[2]=0.0 - cubeWidth*i;
 
-cellules_[i][j]=new cellule(tab1,tab2,tab3,tab4);
+cellules_[i][j]=new cellule(p1,p2,p3,p4);
 
 }
 
 }
 
 }
-void PaintWidget::drawCube()
+void PaintWidget::drawCube(int ligne, int colonne)
 {
     glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -174,40 +166,84 @@ void PaintWidget::drawCube()
     glTranslatef(0.0, 0.0, -35.0f);
 
 glBegin(GL_QUADS);
-glColor3ub(0, 0, 255); // face d'en bas
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1], cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1], cellules_[2][2]->coordinates_[3][2]);
-glColor3ub(0, 0, 255); //face d'en haux
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1]+10, cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1]+10, cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]);
-//glColor3ub(0, 0, 255);// face en face
-//glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
-//glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]+10);
-//glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]+10);
-//glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]);
-glColor3ub(255, 0, 255);// face derriere
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]-10);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]-10);
-glColor3ub(255, 0, 0);// face a droite
+glColor3ub(0, 0, 255);
 
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1]+10, cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
+ // face d'en bas
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y(), cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y(), cellules_[ligne][colonne]->coordinates_[1].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[2].x(), cellules_[ligne][colonne]->coordinates_[2].y(), cellules_[ligne][colonne]->coordinates_[2].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[3].x(), cellules_[ligne][colonne]->coordinates_[3].y(), cellules_[ligne][colonne]->coordinates_[3].z());
+ //face d'en haux
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y()+10, cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y()+10, cellules_[ligne][colonne]->coordinates_[1].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[2].x(), cellules_[ligne][colonne]->coordinates_[2].y()+10, cellules_[ligne][colonne]->coordinates_[2].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[3].x(), cellules_[ligne][colonne]->coordinates_[3].y()+10, cellules_[ligne][colonne]->coordinates_[3].z());
+// face en face
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y()+10, cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y(), cellules_[ligne][colonne]->coordinates_[1].z()+10);
+glVertex3f(cellules_[ligne][colonne]->coordinates_[2].x(), cellules_[ligne][colonne]->coordinates_[2].y(), cellules_[ligne][colonne]->coordinates_[2].z()+10);
+glVertex3f(cellules_[ligne][colonne]->coordinates_[3].x(), cellules_[ligne][colonne]->coordinates_[3].y()+10, cellules_[ligne][colonne]->coordinates_[3].z());
+// face derriere
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y()+10, cellules_[ligne][colonne]->coordinates_[0].z()-10);
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y(), cellules_[ligne][colonne]->coordinates_[1].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[2].x(), cellules_[ligne][colonne]->coordinates_[2].y(), cellules_[ligne][colonne]->coordinates_[2].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[3].x(), cellules_[ligne][colonne]->coordinates_[3].y()+10, cellules_[ligne][colonne]->coordinates_[3].z()-10);
+// face a gauche
 
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1], cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y()+10, cellules_[ligne][colonne]->coordinates_[1].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y()+10, cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x(), cellules_[ligne][colonne]->coordinates_[0].y(), cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x(), cellules_[ligne][colonne]->coordinates_[1].y(), cellules_[ligne][colonne]->coordinates_[1].z());
+// face a droite
+
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x()+10, cellules_[ligne][colonne]->coordinates_[1].y()+10, cellules_[ligne][colonne]->coordinates_[1].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x()+10, cellules_[ligne][colonne]->coordinates_[0].y()+10, cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[0].x()+10, cellules_[ligne][colonne]->coordinates_[0].y(), cellules_[ligne][colonne]->coordinates_[0].z());
+glVertex3f(cellules_[ligne][colonne]->coordinates_[1].x()+10, cellules_[ligne][colonne]->coordinates_[1].y(), cellules_[ligne][colonne]->coordinates_[1].z());
 //glColor3ub(255, 255, 0);
-//glVertex3f(3.0f, 3.0f, -7.0f);
-//glVertex3f(3.0f, 3.0f, -5.0f);
-//glVertex3f(3.0f, 1.0f, -5.0f);
-//glVertex3f(3.0f, 1.0f, -7.0f);
+
 glEnd();
 
 
 }
 
+void PaintWidget::creatTetramino(){
+    int ligneInit=12;
+    int colloneInit=5;
+    std::vector<cellule> cellules;
+       cellule c1( cellules_[12][5]->coordinates_[0],cellules_[12][5]->coordinates_[1],cellules_[12][5]->coordinates_[2],cellules_[12][5]->coordinates_[3]) ;
+       c1.setStatue(true);
+    cellules.push_back(c1);
+      QColor c(255,255,255);
+      std::vector<std::tuple<int, int>> possibilites;
+      possibilites.push_back(std::tuple<int, int>(12, 4));
+      possibilites.push_back(std::tuple<int, int>(12, 6));
+      possibilites.push_back(std::tuple<int, int>(11, 5));
+      possibilites.push_back(std::tuple<int, int>(13, 5));
+
+      std::vector<std::tuple<int, int>> already_taken;
+      already_taken.push_back(std::tuple<int, int>(12,5));
+
+      for(int i = 0; i < 3; i++){
+          int r = rand()%possibilites.size();
+          std::tuple<int, int> choice = possibilites[r];
+          int ligne = std::get<0>(choice);
+          int colone = std::get<1>(choice);
+          possibilites.erase(possibilites.begin()+r);
+          cellules.push_back(cellule(cellules_[ligne][colone]->coordinates_[0],cellules_[ligne][colone]->coordinates_[1],cellules_[ligne][colone]->coordinates_[2],cellules_[ligne][colone]->coordinates_[3]));
+          already_taken.push_back(choice);
+          //add new neigbohoods
+           for(int j = 0; j < 4; j++){
+              int activation = (j > 1) ? 1 : 0;
+              std::tuple<int, int> t(ligne+(pow(-1, j)*activation),colone+(pow(-1, j)*((activation+1)%2)));
+              if(std::find(already_taken.begin(), already_taken.end(), t) != already_taken.end()){
+                  possibilites.push_back(t);
+              }
+           }
+      }
+    //  qDebug()<<"je suis a la fin";
+      t=new Tetramino(cellules,c);
+
+      // tetraminos_.push_back(c1, QColor c(255,255,255));
+
+}

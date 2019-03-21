@@ -11,6 +11,10 @@
 #include <QOpenGLWidget>
 #include<qopenglfunctions.h>
 #include"cellule.h"
+#include<iostream>
+#include"tetramino.h"
+#include<QVector3D>
+#include<QDebug>
 
 class PaintWidget : public QOpenGLWidget
 {
@@ -33,8 +37,8 @@ protected:
     void keyPressEvent(QKeyEvent * event);
     void drawEnvironment(GLfloat cubeWidth);
   //  void Draw();
-    void drawCube();
-
+    void drawCube(int ligne, int colonne);
+    void creatTetramino();
 
 
 
@@ -48,6 +52,8 @@ private:
     int    length = 5; // default length of 5
      int   height = 12; // default height of 12
     cellule *cellules_[15][9];
+    std::vector<Tetramino> tetraminos_;
+    Tetramino *t;
 
     // bool casesStatue[15][9];
     // cellule *cel=new cellule(0,0,0);
