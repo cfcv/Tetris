@@ -11,4 +11,5 @@
 - [ ] Integration with the hands detection
 - [ ] Devide all the code in meaninfull classes(one for the game, one for detection...)
 - [ ] Train our own haar cascade to a more accurated hand detection
+- [ ] Make a beautiful rapport
 
