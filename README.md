@@ -2,7 +2,7 @@
 
 ## Fonctionalities
 - [x] Defining pieces(class)
-- [ ] Generate random pieces with random color also
+- [x] Generate random pieces with random color also
 - [ ] Perspective view changing
 - [ ] Add the sense of current piece
 - [ ] Generate a new random piece when the current piece touches the floor
