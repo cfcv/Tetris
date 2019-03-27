@@ -9,7 +9,7 @@
 //cv::VideoCapture cap_;
 //cv::CascadeClassifier hand_cascade_;
 //int direction_ = 0; // -1 -> gauche, 0 -> rien, 1 -> droite
-VideoCrontrol::VideoCrontrol(QObject *parent) : QObject(parent)
+VideoCrontrol::VideoCrontrol(QLabel* i, QObject *parent) : QObject(parent)
 {
     //read the haar cascade file
     //appel a function to read the image and detect hands

@@ -10,6 +10,7 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
     ui(new Ui::TetrisMainWindow)
 {
     ui->setupUi(this);
+    vc_ = new VideoCrontrol(ui->image_label);
 }
 
 TetrisMainWindow::~TetrisMainWindow()
