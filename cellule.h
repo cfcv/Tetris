@@ -23,16 +23,15 @@ public:
 private:
     bool statue_;
     QColor color_;
+    std::vector<QVector3D> coordinates_;
+
 public:
     bool getStatue(){return  statue_;}
     void setStatue(bool b){statue_=b;}
     void setColor(QColor c){color_=c;}
-    std::vector<QVector3D> coordinates_;
+    std::vector<QVector3D> getCoordinates(){return  coordinates_;}
     void draw();
-    //double coordinates_[4][3];
-  //  std::vector<std::vector<double>> getCoordinates(){return coordinates_;}
 
-   // double** getCoordinates(){return (coordinates_);}
 };
 
 

@@ -13,7 +13,7 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     cap_ = VideoCapture(0);
-    if( !hand_cascade_.load("../Tetris/closed_frontal_palm.xml"))//"/home/cfcv/Desktop/CascadeTraining/data/cascade.xml"))//CarData/data/cascade.xml"))//CascadeTraining/data/cascade.xml"))//Tutoriais/Projet_s8/tests/Opencv/haarcascade/closed_frontal_palm.xml" ) )
+    if( !hand_cascade_.load("C:/Users/yayak/Desktop/cours_fise2/Tetris/ressource/hand.xml"))//"/home/cfcv/Desktop/CascadeTraining/data/cascade.xml"))//CarData/data/cascade.xml"))//CascadeTraining/data/cascade.xml"))//Tutoriais/Projet_s8/tests/Opencv/haarcascade/closed_frontal_palm.xml" ) )
     {
         std::cout <<"Error loading haarcascade"<< std::endl;
         close();
