@@ -2,6 +2,9 @@
 #include <QPainter>
 #include <QDebug>
 #include <QGLWidget>
+#include<QColor>
+#include <tuple>
+#include <math.h>
 
 // Declarations des constantes
 const unsigned int WIN_WIDTH  = 1600;
@@ -10,6 +13,10 @@ const float MAX_DIMENSION     = 50.0f;
 
 PaintWidget::PaintWidget(QWidget* parent) : QOpenGLWidget(parent)
 {
+
+    //QTimer* timer = new QTimer(this);
+    //connect(timer, SIGNAL(timeout()), this, SLOT(incrementZ()));
+    //timer->start(1000); //milisecondes
   //  setFixedSize(WIN_WIDTH, WIN_HEIGHT);
 //    for (int i=0;i<15;i++)
 //        for(int j=0;j<9;j++)
@@ -35,7 +42,8 @@ void PaintWidget::moveCircle(int direction){
 // Fonction d'initialisation
 void PaintWidget::initializeGL()
 {
-   // QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+
+    // QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
 
 
 //    // Reglage de la couleur de fond
@@ -43,7 +51,7 @@ void PaintWidget::initializeGL()
 
 //    // Activation du zbuffer
 //    // ...
-   glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 
 
 }
@@ -53,14 +61,8 @@ void PaintWidget::paintGL()
 
     glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
 
-    drawEnvironment(10);
-    glLoadIdentity();
-  //  glTranslatef(0.0, 0.0, -35.0f);
-
-    drawCube();
-   // Draw();
-
-
+    drawEnvironment();
+    drawTetraminos();
 }
 void PaintWidget::resizeGL(int width, int height)
 {
@@ -115,99 +117,52 @@ void PaintWidget::keyPressEvent(QKeyEvent * event)
 
 
 
-void PaintWidget::drawEnvironment(GLfloat cubeWidth)
-{
-glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-//glClear(GL_COLOR_BUFFER_BIT);
-glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
-
-glLoadIdentity();
-int count = 0;
-glTranslatef(0.0, 0.0, -35.0f);
-for(int i = 0; i < 15; i++) // For each layer
-{
-for(int j = 0; j < 9; j++) // top wall, 5 squares across
-{
-    if( count % 2)
-        glColor3f(0.0f, 0.0f, 0.0f);
-    else
-        glColor3f(0.0f, 0.2f, 0.2f);
-    count++;
-    glBegin(GL_QUADS);
-        glVertex3f(-(cubeWidth * 4.5) + cubeWidth*j, -(cubeWidth * 2.5), 0.0 - cubeWidth*i);
-        glVertex3f(-(cubeWidth * 4.5) + cubeWidth*j, -(cubeWidth * 2.5), -cubeWidth - cubeWidth*i);
-        glVertex3f(-(cubeWidth * 3.5) + cubeWidth*j, -(cubeWidth * 2.5), -cubeWidth - cubeWidth*i);
-        glVertex3f(-(cubeWidth * 3.5) + cubeWidth*j, -(cubeWidth * 2.5), 0.0 - cubeWidth*i);
-    glEnd();
-    double tab1[3];
-    double tab2[3];
-    double tab3[3];
-    double tab4[3];
-    tab1[0]=-(cubeWidth * 4.5) + cubeWidth*j;
-    tab1[1]= -(cubeWidth * 2.5);
-    tab1[2]=0.0 - cubeWidth*i;
-
-    tab2[0]=-(cubeWidth * 4.5) + cubeWidth*j;
-    tab2[1]= -(cubeWidth * 2.5);
-    tab2[2]=-cubeWidth - cubeWidth*i;
-
-    tab3[0]=-(cubeWidth * 3.5) + cubeWidth*j;
-    tab3[1]= -(cubeWidth * 2.5);
-    tab3[2]=-cubeWidth - cubeWidth*i;
-
-    tab4[0]=-(cubeWidth * 3.5) + cubeWidth*j;
-    tab4[1]= -(cubeWidth * 2.5);
-    tab4[2]=0.0 - cubeWidth*i;
-
-cellules_[i][j]=new cellule(tab1,tab2,tab3,tab4);
-
-}
-
-}
-
-}
-void PaintWidget::drawCube()
-{
-    glClear(GL_DEPTH_BUFFER_BIT);
+void PaintWidget::drawEnvironment(){
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
 
     glLoadIdentity();
     glTranslatef(0.0, 0.0, -35.0f);
 
-glBegin(GL_QUADS);
-glColor3ub(0, 0, 255); // face d'en bas
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1], cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1], cellules_[2][2]->coordinates_[3][2]);
-glColor3ub(0, 0, 255); //face d'en haux
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1]+10, cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1]+10, cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]);
-//glColor3ub(0, 0, 255);// face en face
-//glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
-//glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]+10);
-//glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]+10);
-//glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]);
-glColor3ub(255, 0, 255);// face derriere
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]-10);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[2][0], cellules_[2][2]->coordinates_[2][1], cellules_[2][2]->coordinates_[2][2]);
-glVertex3f(cellules_[2][2]->coordinates_[3][0], cellules_[2][2]->coordinates_[3][1]+10, cellules_[2][2]->coordinates_[3][2]-10);
-glColor3ub(255, 0, 0);// face a droite
+    std::vector<QVector3D> aux;
+    for(int i = 0; i < 15; i++){ // For each layer
+            for(int j = 0; j < 9; j++){ // top wall, 5 squares across
+                if( (i+j) % 2)
+                    glColor3f(0.0f, 0.0f, 0.0f);
+                else
+                    glColor3f(0.0f, 0.2f, 0.2f);
+                aux = cellules_[i][j]->getCoordinates();
+                glBegin(GL_QUADS);
+                    glVertex3f(aux[0].x(), aux[0].y(), aux[0].z());
+                    glVertex3f(aux[1].x(), aux[1].y(), aux[1].z());
+                    glVertex3f(aux[2].x(), aux[2].y(), aux[2].z());
+                    glVertex3f(aux[3].x(), aux[3].y(), aux[3].z());
+                glEnd();
+            }
+    }
+}
 
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1]+10, cellules_[2][2]->coordinates_[1][2]);
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1]+10, cellules_[2][2]->coordinates_[0][2]);
 
-glVertex3f(cellules_[2][2]->coordinates_[0][0], cellules_[2][2]->coordinates_[0][1], cellules_[2][2]->coordinates_[0][2]);
-glVertex3f(cellules_[2][2]->coordinates_[1][0], cellules_[2][2]->coordinates_[1][1], cellules_[2][2]->coordinates_[1][2]);
-//glColor3ub(255, 255, 0);
-//glVertex3f(3.0f, 3.0f, -7.0f);
-//glVertex3f(3.0f, 3.0f, -5.0f);
-//glVertex3f(3.0f, 1.0f, -5.0f);
-//glVertex3f(3.0f, 1.0f, -7.0f);
-glEnd();
+void PaintWidget::drawTetraminos(){
+    for(int i=0; i < tetraminos_.size();i++){
+        glPushMatrix();
+        qDebug()<<tetraminos_[i].getTranslateZ();
+        glTranslated(0,0,tetraminos_[i].getTranslateZ());
+        tetraminos_[i].draw();
+        glPopMatrix();
+    }
+}
+void PaintWidget::creatTetramino(){
 
 
 }
 
+
+void PaintWidget::SetTetraminosVector(std::vector<Tetramino> &v){
+    tetraminos_ = v;
+}
+
+void PaintWidget::setGrille(std::vector<std::vector<cellule*> > & grille){
+    cellules_ = grille;
+}
