@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "paintwidget.h"
+#include <QWidget>
 
 class GameControl : public QObject
 {
@@ -20,6 +21,8 @@ private:
        std::vector<std::vector<cellule*> > cellules_;
        void createTetramino();
        void createGrille();
+       float getZmin();
+       bool canWeMouve();
 };
 
 #endif // GAMECONTROL_H

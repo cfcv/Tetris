@@ -147,11 +147,11 @@ void PaintWidget::drawEnvironment(){
 void PaintWidget::drawTetraminos(){
     for(int i=0; i < tetraminos_.size();i++){
         glPushMatrix();
-        qDebug()<<tetraminos_[i].getTranslateZ();
-        glTranslated(0,0,tetraminos_[i].getTranslateZ());
+        glTranslated(tetraminos_[i].getTranslateX(),tetraminos_[i].getTranslateY(),tetraminos_[i].getTranslateZ());
         tetraminos_[i].draw();
         glPopMatrix();
     }
+    update();
 }
 void PaintWidget::creatTetramino(){
 

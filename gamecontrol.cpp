@@ -15,11 +15,48 @@ GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affi
            srand(time(NULL));
            affichage->SetTetraminosVector(tetraminos_);
 }
+float GameControl::getZmin()
+{
+    std::vector<cellule> cellules=tetraminos_.back().getCellules();
+    float Max=cellules[0].getCoordinates()[0].z();
+    for(int i=0;i<cellules.size();i++)
+    {
+        std::vector<QVector3D> coordinates=cellules[i].getCoordinates();
+        float max=coordinates[0].z();
+        for(int j=0;j<coordinates.size();j++)
+        {
+          max=(max<coordinates[i].z())? coordinates[i].z():max;
+        }
+        Max=(Max<max)? max:Max;
 
+    }
+    return Max;
+}
+bool GameControl::canWeMouve()
+{
+
+    std::vector<cellule> cellules=tetraminos_.back().getCellules();
+    for(int i=0;i<cellules.size();i++)
+    {
+        cellules[i].setStatue(false);
+    }
+    return true;
+}
 void GameControl::incrementZ(){
+    if(getZmin()+tetraminos_.back().getTranslateZ()==0)
+    {
+       // std::vector<cellule> cellules=tetraminos_.back().getCellules();
+
+        createTetramino();
+    }else
     if(!tetraminos_.empty())
-            tetraminos_.back().translateZ();
-      //  qDebug()<<tetraminos_.back().getTranslateZ();
+    {
+        tetraminos_.back().translateZ();
+    }
+
+    // gestion des collision maintenand
+    affichage->SetTetraminosVector(tetraminos_);
+       // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
 }
 
 void GameControl::createGrille(){
@@ -32,7 +69,6 @@ void GameControl::createGrille(){
             QVector3D p2(-(cubeWidth * 4.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
             QVector3D p3(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
             QVector3D p4(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),0.0 - cubeWidth*i);
-
             cellules_[i][j] = new cellule(p1,p2,p3,p4);
         }
     }

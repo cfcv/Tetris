@@ -6,7 +6,7 @@ cellule::cellule(QVector3D p1,QVector3D p2,QVector3D p3,QVector3D p4)
             coordinates_.push_back(p2);
             coordinates_.push_back(p3);
             coordinates_.push_back(p4);           
-            statue_=false;
+            statue_=true;
 }
 void cellule::draw()
 {

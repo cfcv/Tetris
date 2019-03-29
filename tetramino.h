@@ -16,13 +16,19 @@ public:
     //draw
 private:
     QColor color_;
-    float translate_x = 0;
-    float translate_y = 0;
-    double translate_z ;
-public:
+    float translate_x ;
+    float translate_y; // on ne vas peut-etre pas l'utiliser( a voir si on a le temps de faire des trucs)
+    float translate_z ;
     std::vector<cellule> tetramino_;
-    double getTranslateZ();
+
+public:
+    float getTranslateZ();
+    float getTranslateX();
+    float getTranslateY();
     void translateZ();
+    void translateX(QString sens);
+    void translateY();
+    std::vector<cellule> getCellules();
 };
 
 #endif // TETRAMINO_H
