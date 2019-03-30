@@ -123,10 +123,14 @@ void GameControl::createTetramino(){
        for(int j = 0; j < 4; j++){
           int activation = (j > 1) ? 1 : 0;
           std::tuple<int, int> t(ligne+(pow(-1, j)*activation),colone+(pow(-1, j)*((activation+1)%2)));
-          if(std::find(already_taken.begin(), already_taken.end(), t) != already_taken.end()){
+          if(std::find(already_taken.begin(), already_taken.end(), t) == already_taken.end()){
               possibilites.push_back(t);
           }
        }
+    }
+    qDebug() << cellules.size();
+    for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
+        qDebug() << itc->getLigne() << itc->getColonne();
     }
     tetraminos_.push_back(Tetramino(cellules,c));
 
