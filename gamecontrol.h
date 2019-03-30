@@ -16,12 +16,15 @@ signals:
 public slots:
     void incrementZ();
 private:
-    PaintWidget* affichage;
+       int cubeWidth;
+       int grilleWidth;
+       int grilleHeith;
+       PaintWidget* affichage;
        std::vector<Tetramino> tetraminos_;
        std::vector<std::vector<cellule*> > cellules_;
        void createTetramino();
        void createGrille();
-       float getZmin();
+       float getZmax();
        bool canWeMouve();
 };
 

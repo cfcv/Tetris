@@ -4,54 +4,62 @@
 
 GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affichage(p)
 {
-
+    cubeWidth=10;
+    grilleWidth=9;
+    grilleHeith=15;
     QTimer* timer2 = new QTimer(this);
        connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
        timer2->start(1000); //milisecondes
        createGrille();
-           affichage->setGrille(cellules_);
+       affichage->setGrille(cellules_);
 
            createTetramino();
            srand(time(NULL));
            affichage->SetTetraminosVector(tetraminos_);
 }
-float GameControl::getZmin()
+float GameControl::getZmax()
 {
     std::vector<cellule> cellules=tetraminos_.back().getCellules();
-    float Max=cellules[0].getCoordinates()[0].z();
-    for(int i=0;i<cellules.size();i++)
+    float Max=cellules.begin()->getCoordinates().begin()->z();
+    for(std::vector<cellule>::iterator itr=cellules.begin();itr!=cellules.end();++itr)
     {
-        std::vector<QVector3D> coordinates=cellules[i].getCoordinates();
-        float max=coordinates[0].z();
-        for(int j=0;j<coordinates.size();j++)
+        std::vector<QVector3D> coordinates=itr->getCoordinates();
+        float max=coordinates.begin()->z();
+        for (std::vector<QVector3D>::iterator it = coordinates.begin() ; it != coordinates.end(); ++it)
         {
-          max=(max<coordinates[i].z())? coordinates[i].z():max;
+          max=(max<it->z())? it->z():max;
         }
         Max=(Max<max)? max:Max;
 
     }
     return Max;
 }
+
 bool GameControl::canWeMouve()
 {
+    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+        int line = itc->getLigne();
+        int colum = itc->getColonne();
 
-    std::vector<cellule> cellules=tetraminos_.back().getCellules();
-    for(int i=0;i<cellules.size();i++)
-    {
-        cellules[i].setStatue(false);
+        if( line == 0 || cellules_[line-1][colum]->getStatue()){
+            return false;
+        }
     }
     return true;
 }
 void GameControl::incrementZ(){
-    if(getZmin()+tetraminos_.back().getTranslateZ()==0)
-    {
-       // std::vector<cellule> cellules=tetraminos_.back().getCellules();
-
-        createTetramino();
-    }else
-    if(!tetraminos_.empty())
-    {
+    if(canWeMouve()){
         tetraminos_.back().translateZ();
+        tetraminos_.back().rollTetramino();
+    }else if(!canWeMouve()){
+        std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+        for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+            int line = itc->getLigne();
+            int colum = itc->getColonne();
+            cellules_[line][colum]->setStatue(true);// toute est faux au debut
+        }
+        createTetramino();
     }
 
     // gestion des collision maintenand
@@ -60,16 +68,16 @@ void GameControl::incrementZ(){
 }
 
 void GameControl::createGrille(){
-    int cubeWidth = 10;
-    cellules_.resize(15);
-    for(int i = 0; i < 15; i++){ // For each layer
-        cellules_[i].resize(9);
-        for(int j = 0; j < 9; j++){ // top wall, 5 squares across
+    //int cubeWidth = 10;
+    cellules_.resize(grilleHeith);
+    for(int i = 0; i < grilleHeith; i++){ // For each layer
+        cellules_[i].resize(grilleWidth);
+        for(int j = 0; j < grilleWidth; j++){ // top wall, 5 squares across
             QVector3D p1(-(cubeWidth * 4.5) + cubeWidth*j,-(cubeWidth * 2.5),0.0 - cubeWidth*i);
             QVector3D p2(-(cubeWidth * 4.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
             QVector3D p3(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),-cubeWidth - cubeWidth*i);
             QVector3D p4(-(cubeWidth * 3.5) + cubeWidth*j,-(cubeWidth * 2.5),0.0 - cubeWidth*i);
-            cellules_[i][j] = new cellule(p1,p2,p3,p4);
+            cellules_[i][j] = new cellule(p1,p2,p3,p4,i,j);
         }
     }
 }
@@ -92,31 +100,24 @@ void GameControl::createTetramino(){
         }
         QColor c(rgb[0],rgb[1],rgb[2]);
 
-
     int ligneInit=12;
     int colloneInit=5;
     std::vector<cellule> cellules;
-    cellule c1( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3]) ;
-    //c1.setStatue(true);
-    cellules.push_back(c1);
-   // QColor c(255,255,255);
+    cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
     std::vector<std::tuple<int, int>> possibilites;
     possibilites.push_back(std::tuple<int, int>(12, 4));
     possibilites.push_back(std::tuple<int, int>(12, 6));
     possibilites.push_back(std::tuple<int, int>(11, 5));
     possibilites.push_back(std::tuple<int, int>(13, 5));
-
     std::vector<std::tuple<int, int>> already_taken;
     already_taken.push_back(std::tuple<int, int>(12,5));
-
-
     for(int i = 0; i < 3; i++){
       int r = rand()%possibilites.size();
       std::tuple<int, int> choice = possibilites[r];
       int ligne = std::get<0>(choice);
       int colone = std::get<1>(choice);
       possibilites.erase(possibilites.begin()+r);
-      cellules.push_back(cellule(cellules_[ligne][colone]->getCoordinates()[0],cellules_[ligne][colone]->getCoordinates()[1],cellules_[ligne][colone]->getCoordinates()[2],cellules_[ligne][colone]->getCoordinates()[3]));
+      cellules.push_back(cellule(cellules_[ligne][colone]->getCoordinates()[0],cellules_[ligne][colone]->getCoordinates()[1],cellules_[ligne][colone]->getCoordinates()[2],cellules_[ligne][colone]->getCoordinates()[3],ligne,colone));
       already_taken.push_back(choice);
       //add new neigbohoods
        for(int j = 0; j < 4; j++){

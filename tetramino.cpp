@@ -41,3 +41,9 @@ void Tetramino::translateY()
 {
     translate_y+=10;
 }
+
+void Tetramino::rollTetramino(){
+    for(std::vector<cellule>::iterator itc = tetramino_.begin(); itc != tetramino_.end(); ++itc){
+        itc->rollLigne();
+    }
+}

@@ -1,12 +1,14 @@
 #include "cellule.h"
 
-cellule::cellule(QVector3D p1,QVector3D p2,QVector3D p3,QVector3D p4)
+cellule::cellule(QVector3D p1,QVector3D p2,QVector3D p3,QVector3D p4,int ligne,int colonnes)
 {                           
             coordinates_.push_back(p1);
             coordinates_.push_back(p2);
             coordinates_.push_back(p3);
             coordinates_.push_back(p4);           
-            statue_=true;
+            statue_=false;
+            ligne_=ligne;
+            colonne_=colonnes;
 }
 void cellule::draw()
 {

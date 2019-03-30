@@ -10,6 +10,7 @@ class Tetramino
 public:
     Tetramino(std::vector<cellule> positions, QColor c);
     void draw();
+    void rollTetramino();
     //rotateRight
     //rotateLeft
     //Roll
