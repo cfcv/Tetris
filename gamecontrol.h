@@ -15,6 +15,9 @@ signals:
 
 public slots:
     void incrementZ();
+    void LeftRequest();
+    void RightRequest();
+    void RotateRequest();
 private:
        int cubeWidth;
        int grilleWidth;
@@ -25,7 +28,7 @@ private:
        void createTetramino();
        void createGrille();
        float getZmax();
-       bool canWeMouve();
+       bool canWeMouveDown();
 };
 
 #endif // GAMECONTROL_H

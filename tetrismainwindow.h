@@ -25,6 +25,11 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent* event);
+
+signals:
+    void LeftSignal();
+    void RightSignal();
+    void RotateSignal();
 };
 
 #endif // TETRISMAINWINDOW_H

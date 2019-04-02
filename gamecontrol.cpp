@@ -35,7 +35,7 @@ float GameControl::getZmax()
     return Max;
 }
 
-bool GameControl::canWeMouve()
+bool GameControl::canWeMouveDown()
 {
     std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
@@ -47,24 +47,6 @@ bool GameControl::canWeMouve()
         }
     }
     return true;
-}
-void GameControl::incrementZ(){
-    if(canWeMouve()){
-        tetraminos_.back().translateZ();
-        tetraminos_.back().rollTetramino();
-    }else if(!canWeMouve()){
-        std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
-        for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
-            int line = itc->getLigne();
-            int colum = itc->getColonne();
-            cellules_[line][colum]->setStatue(true);// toute est faux au debut
-        }
-        createTetramino();
-    }
-
-    // gestion des collision maintenand
-    affichage->SetTetraminosVector(tetraminos_);
-       // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
 }
 
 void GameControl::createGrille(){
@@ -128,10 +110,42 @@ void GameControl::createTetramino(){
           }
        }
     }
-    qDebug() << cellules.size();
-    for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
-        qDebug() << itc->getLigne() << itc->getColonne();
-    }
+    //qDebug() << cellules.size();
+    //for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
+    //    qDebug() << itc->getLigne() << itc->getColonne();
+    //}
     tetraminos_.push_back(Tetramino(cellules,c));
 
+}
+
+//--------------- SLOTS DEFINITION -----------------
+void GameControl::incrementZ(){
+    if(canWeMouveDown()){
+        tetraminos_.back().translateZ();
+        tetraminos_.back().rollTetramino();
+    }else if(!canWeMouveDown()){
+        std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+        for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+            int line = itc->getLigne();
+            int colum = itc->getColonne();
+            cellules_[line][colum]->setStatue(true);// toute est faux au debut
+        }
+        createTetramino();
+    }
+
+    // gestion des collision maintenand
+    affichage->SetTetraminosVector(tetraminos_);
+       // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
+}
+
+void GameControl::LeftRequest(){
+    qDebug() << "Left request";
+}
+
+void GameControl::RightRequest(){
+    qDebug() << "Right request";
+}
+
+void GameControl::RotateRequest(){
+    qDebug() << "Rotate Request";
 }

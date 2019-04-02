@@ -12,6 +12,9 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
     ui->setupUi(this);
     vc_ = new VideoCrontrol(ui->image_label);
     gc_ = new GameControl(ui->paintArea);
+    connect(this, SIGNAL(LeftSignal()), gc_, SLOT(LeftRequest()));
+    connect(this, SIGNAL(RightSignal()), gc_, SLOT(RightRequest()));
+    connect(this, SIGNAL(RotateSignal()), gc_, SLOT(RotateRequest()));
 }
 
 TetrisMainWindow::~TetrisMainWindow()
@@ -24,17 +27,20 @@ void TetrisMainWindow::keyPressEvent(QKeyEvent * event){
         // Activation/Arret de l'animation
         case Qt::Key_A:{
             qDebug() << "left";
+            emit LeftSignal();
             break;
         }
 
         // Sortie de l'application
         case Qt::Key_D:{
             qDebug() << "right";
+            emit RightSignal();
             break;
         }
 
         case Qt::Key_R:{
             qDebug() << "rotate";
+            emit RotateSignal();
             break;
         }
         case Qt::Key_Q:{
