@@ -11,9 +11,8 @@ public:
     Tetramino(std::vector<cellule> positions, QColor c);
     void draw();
     void rollTetramino();
-    //rotateRight
-    //rotateLeft
-    //Roll
+    void moveLeft();
+    void moveRight();
     //draw
 private:
     QColor color_;

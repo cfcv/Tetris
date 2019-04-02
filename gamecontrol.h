@@ -28,7 +28,9 @@ private:
        void createTetramino();
        void createGrille();
        float getZmax();
-       bool canWeMouveDown();
+       bool canWeMoveDown();
+       bool canWeMoveLeft();
+       bool canWeMoveRight();
 };
 
 #endif // GAMECONTROL_H

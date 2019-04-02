@@ -47,3 +47,17 @@ void Tetramino::rollTetramino(){
         itc->rollLigne();
     }
 }
+
+void Tetramino::moveLeft(){
+    translate_x -= 10;
+    for(std::vector<cellule>::iterator itc = tetramino_.begin(); itc != tetramino_.end(); ++itc){
+        itc->moveLeft();
+    }
+}
+
+void Tetramino::moveRight(){
+    translate_x += 10;
+    for(std::vector<cellule>::iterator itc = tetramino_.begin(); itc != tetramino_.end(); ++itc){
+        itc->moveRight();
+    }
+}

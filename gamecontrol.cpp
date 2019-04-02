@@ -35,20 +35,6 @@ float GameControl::getZmax()
     return Max;
 }
 
-bool GameControl::canWeMouveDown()
-{
-    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
-    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
-        int line = itc->getLigne();
-        int colum = itc->getColonne();
-
-        if( line == 0 || cellules_[line-1][colum]->getStatue()){
-            return false;
-        }
-    }
-    return true;
-}
-
 void GameControl::createGrille(){
     //int cubeWidth = 10;
     cellules_.resize(grilleHeith);
@@ -118,12 +104,51 @@ void GameControl::createTetramino(){
 
 }
 
+bool GameControl::canWeMoveDown(){
+    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+        int line = itc->getLigne();
+        int colum = itc->getColonne();
+
+        if( line == 0 || cellules_[line-1][colum]->getStatue()){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool GameControl::canWeMoveLeft(){
+    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+        int line = itc->getLigne();
+        int colum = itc->getColonne();
+        //qDebug() << "colum: " << colum;
+        if( colum == 0 || cellules_[line][colum-1]->getStatue()){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool GameControl::canWeMoveRight(){
+    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+        int line = itc->getLigne();
+        int colum = itc->getColonne();
+        //qDebug() << "colum: " << colum;
+        if( colum == (grilleWidth-1) || cellules_[line][colum+1]->getStatue()){
+            return false;
+        }
+    }
+    return true;
+}
+
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::incrementZ(){
-    if(canWeMouveDown()){
+    if(canWeMoveDown()){
         tetraminos_.back().translateZ();
         tetraminos_.back().rollTetramino();
-    }else if(!canWeMouveDown()){
+    }else {//if(!canWeMoveDown()){
         std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
         for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
             int line = itc->getLigne();
@@ -140,10 +165,18 @@ void GameControl::incrementZ(){
 
 void GameControl::LeftRequest(){
     qDebug() << "Left request";
+    if(canWeMoveLeft()){
+        qDebug() << "YES";
+        tetraminos_.back().moveLeft();
+    }
 }
 
 void GameControl::RightRequest(){
     qDebug() << "Right request";
+    if(canWeMoveRight()){
+        qDebug() << "YES";
+        tetraminos_.back().moveRight();
+    }
 }
 
 void GameControl::RotateRequest(){

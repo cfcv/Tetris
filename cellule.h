@@ -33,7 +33,9 @@ public:
     void setColor(QColor c){color_=c;}
     int getLigne(){return ligne_;}
     int getColonne(){return colonne_;}
-    int rollLigne(){ligne_+=-1;}
+    void rollLigne(){ligne_+=-1;}
+    void moveLeft(){colonne_ -= 1;}
+    void moveRight(){colonne_ += 1;}
     std::vector<QVector3D> getCoordinates(){return  coordinates_;}
     void draw();
 
