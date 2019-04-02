@@ -22,6 +22,9 @@ private:
     Ui::TetrisMainWindow *ui;
     VideoCrontrol* vc_;
     GameControl* gc_;
+
+protected:
+    void keyPressEvent(QKeyEvent* event);
 };
 
 #endif // TETRISMAINWINDOW_H
