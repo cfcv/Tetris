@@ -58,7 +58,7 @@ void PaintWidget::initializeGL()
 void PaintWidget::paintGL()
 {
     // Reinitialisation des tampons
-
+    glLoadIdentity();
     glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
 
     drawEnvironment();
@@ -113,8 +113,6 @@ void PaintWidget::keyPressEvent(QKeyEvent * event)
     event->accept();
   //  updateGL();
 }
-
-
 
 
 void PaintWidget::drawEnvironment(){

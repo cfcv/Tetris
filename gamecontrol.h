@@ -31,6 +31,7 @@ private:
        bool canWeMoveDown();
        bool canWeMoveLeft();
        bool canWeMoveRight();
+       std::vector<QString> listeImage;
 };
 
 #endif // GAMECONTROL_H

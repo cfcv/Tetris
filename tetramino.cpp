@@ -1,8 +1,14 @@
 #include "tetramino.h"
 #include <QTimer>
 
-Tetramino::Tetramino(std::vector<cellule> positions, QColor c):color_(c),tetramino_(positions)
+Tetramino::Tetramino(std::vector<cellule> positions, QColor c,QString  I):color_(c),tetramino_(positions)
 {
+ //   qDebug()<< "le nom de la texture: "<<I;
+texture_=QGLWidget::convertToGLFormat(QImage(I));
+
+//glGenTextures( 1, &m_TextureID );
+
+
 
 translate_z = 0;
 translate_x = 0;
@@ -10,14 +16,15 @@ translate_y = 0;
 }
 void Tetramino::draw(){
 //system("pause");
+  //  glBindTexture( GL_TEXTURE_2D, *m_TextureID );
+     glColor3ub(255, 255, 255);
 
     for(int i=0;i<tetramino_.size();i++)
     {
-        glColor3ub(color_.red(), color_.green(), color_.blue());
-        tetramino_[i].draw();
+        tetramino_[i].draw(texture_);
     }
+//    glDeleteTextures(1,m_TextureID);
 }
-
 
 float Tetramino::getTranslateZ(){
     return translate_z;

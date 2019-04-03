@@ -37,7 +37,7 @@ public:
     void moveLeft(){colonne_ -= 1;}
     void moveRight(){colonne_ += 1;}
     std::vector<QVector3D> getCoordinates(){return  coordinates_;}
-    void draw();
+    void draw( QImage texture_ );
 
 };
 

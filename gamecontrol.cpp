@@ -7,6 +7,10 @@ GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affi
     cubeWidth=10;
     grilleWidth=9;
     grilleHeith=15;
+    QString path="C:\\Users\\yayak\\Desktop\\cours_fise2\\Tetris\\image\\";
+    // je charge tous les images
+    for(int i=0;i<7;i++)
+       listeImage.push_back(path+QString::number(i)+".png");
     QTimer* timer2 = new QTimer(this);
        connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
        timer2->start(1000); //milisecondes
@@ -67,7 +71,7 @@ void GameControl::createTetramino(){
                 rgb[i]=(rand()%2==1)? value : 0;
         }
         QColor c(rgb[0],rgb[1],rgb[2]);
-
+ // nous ollons ajouter des textures a notre tetramiono
     int ligneInit=12;
     int colloneInit=5;
     std::vector<cellule> cellules;
@@ -100,7 +104,7 @@ void GameControl::createTetramino(){
     //for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
     //    qDebug() << itc->getLigne() << itc->getColonne();
     //}
-    tetraminos_.push_back(Tetramino(cellules,c));
+    tetraminos_.push_back(Tetramino(cellules,c,listeImage[rand()%listeImage.size()]));
 
 }
 
