@@ -3,27 +3,21 @@
 
 Tetramino::Tetramino(std::vector<cellule> positions, QColor c,QString  I):color_(c),tetramino_(positions)
 {
- //   qDebug()<< "le nom de la texture: "<<I;
 texture_=QGLWidget::convertToGLFormat(QImage(I));
-
-//glGenTextures( 1, &m_TextureID );
-
-
 
 translate_z = 0;
 translate_x = 0;
 translate_y = 0;
 }
 void Tetramino::draw(){
-//system("pause");
-  //  glBindTexture( GL_TEXTURE_2D, *m_TextureID );
-     glColor3ub(255, 255, 255);
 
-    for(int i=0;i<tetramino_.size();i++)
+     glColor3ub(255, 255, 255);
+//     glClear(GL_COLOR_BUFFER_BIT);
+
+    for(std::vector<cellule>::iterator it=tetramino_.begin();it!=tetramino_.end();++it)
     {
-        tetramino_[i].draw(texture_);
+        it->draw(texture_);
     }
-//    glDeleteTextures(1,m_TextureID);
 }
 
 float Tetramino::getTranslateZ(){

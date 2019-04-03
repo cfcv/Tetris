@@ -21,8 +21,7 @@ private:
     float translate_z ;
     std::vector<cellule> tetramino_;
     QImage texture_;
-    //GLuint m_TextureID ;
-    //QString texture;
+
 
 public:
     float getTranslateZ();

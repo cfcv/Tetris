@@ -100,10 +100,7 @@ void GameControl::createTetramino(){
           }
        }
     }
-    //qDebug() << cellules.size();
-    //for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
-    //    qDebug() << itc->getLigne() << itc->getColonne();
-    //}
+
     tetraminos_.push_back(Tetramino(cellules,c,listeImage[rand()%listeImage.size()]));
 
 }
@@ -126,7 +123,6 @@ bool GameControl::canWeMoveLeft(){
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
         int line = itc->getLigne();
         int colum = itc->getColonne();
-        //qDebug() << "colum: " << colum;
         if( colum == 0 || cellules_[line][colum-1]->getStatue()){
             return false;
         }
@@ -139,7 +135,6 @@ bool GameControl::canWeMoveRight(){
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
         int line = itc->getLigne();
         int colum = itc->getColonne();
-        //qDebug() << "colum: " << colum;
         if( colum == (grilleWidth-1) || cellules_[line][colum+1]->getStatue()){
             return false;
         }
@@ -152,7 +147,7 @@ void GameControl::incrementZ(){
     if(canWeMoveDown()){
         tetraminos_.back().translateZ();
         tetraminos_.back().rollTetramino();
-    }else {//if(!canWeMoveDown()){
+    }else {
         std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
         for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
             int line = itc->getLigne();
@@ -164,21 +159,16 @@ void GameControl::incrementZ(){
 
     // gestion des collision maintenand
     affichage->SetTetraminosVector(tetraminos_);
-       // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
 }
 
 void GameControl::LeftRequest(){
-    qDebug() << "Left request";
     if(canWeMoveLeft()){
-        qDebug() << "YES";
         tetraminos_.back().moveLeft();
     }
 }
 
 void GameControl::RightRequest(){
-    qDebug() << "Right request";
     if(canWeMoveRight()){
-        qDebug() << "YES";
         tetraminos_.back().moveRight();
     }
 }
