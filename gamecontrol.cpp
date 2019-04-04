@@ -5,12 +5,13 @@
 GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affichage(p)
 {
     cubeWidth=10;
-    grilleWidth=9;
-    grilleHeith=15;
+    grilleWidth=10;
+    grilleHeith=20;
     QTimer* timer2 = new QTimer(this);
        connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
        timer2->start(1000); //milisecondes
        createGrille();
+       affichage->setParametersGrille(grilleWidth, grilleHeith);
        affichage->setGrille(cellules_);
 
            createTetramino();
@@ -69,16 +70,16 @@ void GameControl::createTetramino(){
         }
         QColor c(rgb[0],rgb[1],rgb[2]);
 
-    int ligneInit=5;
+    int ligneInit=12;
     int colloneInit=4;
 
     std::vector<cellule> cellules;
-    cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[3],ligneInit,colloneInit));
-    cellules.push_back(cellule( cellules_[ligneInit-1][colloneInit]->getCoordinates()[0],cellules_[ligneInit-1][colloneInit]->getCoordinates()[1],cellules_[ligneInit-1][colloneInit]->getCoordinates()[2],cellules_[ligneInit-1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    tetraminos_.push_back(Tetramino(cellules,c));
-    return;
+    //cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    //cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    //cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[3],ligneInit,colloneInit));
+    //cellules.push_back(cellule( cellules_[ligneInit-1][colloneInit]->getCoordinates()[0],cellules_[ligneInit-1][colloneInit]->getCoordinates()[1],cellules_[ligneInit-1][colloneInit]->getCoordinates()[2],cellules_[ligneInit-1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    //tetraminos_.push_back(Tetramino(cellules,c));
+    //return;
 
     //std::vector<cellule> cellules;
     cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));

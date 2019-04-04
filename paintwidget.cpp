@@ -126,8 +126,8 @@ void PaintWidget::drawEnvironment(){
     glTranslatef(0.0, 0.0, -35.0f);
 
     std::vector<QVector3D> aux;
-    for(int i = 0; i < 15; i++){ // For each layer
-            for(int j = 0; j < 9; j++){ // top wall, 5 squares across
+    for(int i = 0; i < grilleHeith_; i++){ // For each layer
+            for(int j = 0; j < grilleWidth_; j++){ // top wall, 5 squares across
                 if( (i+j) % 2)
                     glColor3f(0.0f, 0.0f, 0.0f);
                 else
@@ -165,4 +165,9 @@ void PaintWidget::SetTetraminosVector(std::vector<Tetramino> &v){
 
 void PaintWidget::setGrille(std::vector<std::vector<cellule*> > & grille){
     cellules_ = grille;
+}
+
+void PaintWidget::setParametersGrille(int gW, int gH){
+    grilleHeith_ = gH;
+    grilleWidth_ = gW;
 }

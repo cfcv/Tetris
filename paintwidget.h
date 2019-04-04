@@ -23,6 +23,7 @@ public:
     explicit PaintWidget(QWidget* parent = nullptr);
     void SetTetraminosVector(std::vector<Tetramino> &v);
     void setGrille(std::vector<std::vector<cellule*> > & grille);
+    void setParametersGrille(int gW, int gH);
 protected:
    // void paintEvent(QPaintEvent* event);
     // Fonction d'initialisation
@@ -40,6 +41,8 @@ protected:
 public slots:
     void moveCircle(int);
 private:
+    int grilleWidth_;
+    int grilleHeith_;
     QTransform transform_;
     int centre_x = 150;
     int centre_y = 150;
