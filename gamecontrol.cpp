@@ -177,7 +177,7 @@ void GameControl::incrementZ(){
 }
 
 void GameControl::LeftRequest(){
-    qDebug() << "Left request";
+    //qDebug() << "Left request";
     if(canWeMoveLeft()){
         qDebug() << "YES";
         tetraminos_.back().moveLeft();
@@ -185,7 +185,7 @@ void GameControl::LeftRequest(){
 }
 
 void GameControl::RightRequest(){
-    qDebug() << "Right request";
+    //qDebug() << "Right request";
     if(canWeMoveRight()){
         qDebug() << "YES";
         tetraminos_.back().moveRight();
@@ -194,7 +194,7 @@ void GameControl::RightRequest(){
 
 void GameControl::RotateRequest(){
     //c = false;
-    qDebug() << "Rotate Request";
+    //qDebug() << "Rotate Request";
     tetraminos_.back().Rotate();
 
 }

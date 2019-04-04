@@ -77,10 +77,12 @@ void PaintWidget::resizeGL(int width, int height)
     if(width != 0)
         gluPerspective(70, width/height , 1, 1000);
 
+    gluLookAt(0.0, 60.0, -30.0, 0.0, -25.0, -90.0, 0, 1, 0);
        // glOrtho(-MAX_DIMENSION, MAX_DIMENSION, -MAX_DIMENSION * height / static_cast<float>(width), MAX_DIMENSION * height / static_cast<float>(width), -MAX_DIMENSION * 2.0f, MAX_DIMENSION * 2.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
 }
 void PaintWidget::keyPressEvent(QKeyEvent * event)
 {
