@@ -8,11 +8,12 @@
 class Tetramino
 {
 public:
-    Tetramino(std::vector<cellule> positions, QColor c,QString  I);
+    Tetramino(std::vector<cellule> positions, QColor c);
     void draw();
     void rollTetramino();
     void moveLeft();
     void moveRight();
+    void Rotate();
     //draw
 private:
     QColor color_;
@@ -20,8 +21,6 @@ private:
     float translate_y; // on ne vas peut-etre pas l'utiliser( a voir si on a le temps de faire des trucs)
     float translate_z ;
     std::vector<cellule> tetramino_;
-    QImage texture_;
-
 
 public:
     float getTranslateZ();
@@ -31,7 +30,6 @@ public:
     void translateX(QString sens);
     void translateY();
     std::vector<cellule> getCellules();
-
 };
 
 #endif // TETRAMINO_H

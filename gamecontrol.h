@@ -19,19 +19,20 @@ public slots:
     void RightRequest();
     void RotateRequest();
 private:
-       int cubeWidth;
-       int grilleWidth;
-       int grilleHeith;
-       PaintWidget* affichage;
-       std::vector<Tetramino> tetraminos_;
-       std::vector<std::vector<cellule*> > cellules_;
-       void createTetramino();
-       void createGrille();
-       float getZmax();
-       bool canWeMoveDown();
-       bool canWeMoveLeft();
-       bool canWeMoveRight();
-       std::vector<QString> listeImage;
+    bool c;
+   int cubeWidth;
+   int grilleWidth;
+   int grilleHeith;
+   PaintWidget* affichage;
+   std::vector<Tetramino> tetraminos_;
+   std::vector<std::vector<cellule*> > cellules_;
+   void createTetramino();
+   void createGrille();
+   float getZmax();
+   bool canWeMoveDown();
+   bool canWeMoveLeft();
+   bool canWeMoveRight();
+   std::vector<QString> listeImage;
 };
 
 #endif // GAMECONTROL_H

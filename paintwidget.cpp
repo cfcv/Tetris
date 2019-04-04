@@ -50,6 +50,7 @@ void PaintWidget::initializeGL()
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 //    // Activation du zbuffer
+//    // ...
     glEnable(GL_DEPTH_TEST);
 
 
@@ -57,7 +58,7 @@ void PaintWidget::initializeGL()
 void PaintWidget::paintGL()
 {
     // Reinitialisation des tampons
-    glLoadIdentity();
+
     glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
 
     drawEnvironment();
@@ -76,15 +77,49 @@ void PaintWidget::resizeGL(int width, int height)
     if(width != 0)
         gluPerspective(70, width/height , 1, 1000);
 
+       // glOrtho(-MAX_DIMENSION, MAX_DIMENSION, -MAX_DIMENSION * height / static_cast<float>(width), MAX_DIMENSION * height / static_cast<float>(width), -MAX_DIMENSION * 2.0f, MAX_DIMENSION * 2.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
+void PaintWidget::keyPressEvent(QKeyEvent * event)
+{
+    switch(event->key())
+    {
+        // Activation/Arret de l'animation
+        case Qt::Key_Space:
+        {
+
+
+            break;
+        }
+
+        // Sortie de l'application
+        case Qt::Key_Escape:
+        {
+            exit(0);
+        }
+
+        // Cas par defaut
+        default:
+        {
+            // Ignorer l'evenement
+            event->ignore();
+            return;
+        }
+    }
+
+    // Acceptation de l'evenement et mise a jour de la scene
+    event->accept();
+  //  updateGL();
+}
+
 
 
 
 void PaintWidget::drawEnvironment(){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    //glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT  | GL_COLOR_BUFFER_BIT);
 
     glLoadIdentity();
@@ -110,11 +145,10 @@ void PaintWidget::drawEnvironment(){
 
 
 void PaintWidget::drawTetraminos(){
-    for(std::vector<Tetramino>::iterator it=tetraminos_.begin();it!=tetraminos_.end();++it)
-    {
+    for(int i=0; i < tetraminos_.size();i++){
         glPushMatrix();
-        glTranslated(it->getTranslateX(),it->getTranslateY(),it->getTranslateZ());
-        it->draw();
+        glTranslated(tetraminos_[i].getTranslateX(),tetraminos_[i].getTranslateY(),tetraminos_[i].getTranslateZ());
+        tetraminos_[i].draw();
         glPopMatrix();
     }
     update();

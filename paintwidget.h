@@ -34,7 +34,8 @@ protected:
     // Fonction d'affichage
     void paintGL();
 
-
+    // Fonction de gestion d'interactions clavier
+    void keyPressEvent(QKeyEvent * event);
 
 public slots:
     void moveCircle(int);

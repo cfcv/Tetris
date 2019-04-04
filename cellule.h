@@ -25,7 +25,12 @@ private:
     QColor color_;
     int ligne_;
     int colonne_;
+    QVector3D center_;
     std::vector<QVector3D> coordinates_;
+    float minX;
+    float minZ;
+    float planY;
+    static float cubeWidth;
 
 public:
     bool getStatue(){return  statue_;}
@@ -33,11 +38,13 @@ public:
     void setColor(QColor c){color_=c;}
     int getLigne(){return ligne_;}
     int getColonne(){return colonne_;}
+    QVector3D getCenter(){return center_;}
     void rollLigne(){ligne_+=-1;}
     void moveLeft(){colonne_ -= 1;}
     void moveRight(){colonne_ += 1;}
+    void rotate(float Xpivot, float Ypivot);
     std::vector<QVector3D> getCoordinates(){return  coordinates_;}
-    void draw( QImage texture_ );
+    void draw();
 
 };
 

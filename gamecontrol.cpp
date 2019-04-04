@@ -7,10 +7,6 @@ GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affi
     cubeWidth=10;
     grilleWidth=9;
     grilleHeith=15;
-    QString path="C:\\Users\\yayak\\Desktop\\cours_fise2\\Tetris\\image\\";
-    // je charge tous les images
-    for(int i=0;i<7;i++)
-       listeImage.push_back(path+QString::number(i)+".png");
     QTimer* timer2 = new QTimer(this);
        connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
        timer2->start(1000); //milisecondes
@@ -20,6 +16,7 @@ GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affi
            createTetramino();
            srand(time(NULL));
            affichage->SetTetraminosVector(tetraminos_);
+    c = true;
 }
 float GameControl::getZmax()
 {
@@ -71,16 +68,25 @@ void GameControl::createTetramino(){
                 rgb[i]=(rand()%2==1)? value : 0;
         }
         QColor c(rgb[0],rgb[1],rgb[2]);
- // nous ollons ajouter des textures a notre tetramiono
-    int ligneInit=12;
-    int colloneInit=5;
+
+    int ligneInit=5;
+    int colloneInit=4;
+
     std::vector<cellule> cellules;
     cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[3],ligneInit,colloneInit));
+    cellules.push_back(cellule( cellules_[ligneInit-1][colloneInit]->getCoordinates()[0],cellules_[ligneInit-1][colloneInit]->getCoordinates()[1],cellules_[ligneInit-1][colloneInit]->getCoordinates()[2],cellules_[ligneInit-1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
+    tetraminos_.push_back(Tetramino(cellules,c));
+    return;
+
+    //std::vector<cellule> cellules;
+    cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
     std::vector<std::tuple<int, int>> possibilites;
-    possibilites.push_back(std::tuple<int, int>(12, 4));
-    possibilites.push_back(std::tuple<int, int>(12, 6));
-    possibilites.push_back(std::tuple<int, int>(11, 5));
-    possibilites.push_back(std::tuple<int, int>(13, 5));
+    possibilites.push_back(std::tuple<int, int>(ligneInit, colloneInit-1));
+    possibilites.push_back(std::tuple<int, int>(ligneInit, colloneInit+1));
+    possibilites.push_back(std::tuple<int, int>(ligneInit-1, colloneInit));
+    possibilites.push_back(std::tuple<int, int>(ligneInit+1, colloneInit));
     std::vector<std::tuple<int, int>> already_taken;
     already_taken.push_back(std::tuple<int, int>(12,5));
     for(int i = 0; i < 3; i++){
@@ -100,8 +106,11 @@ void GameControl::createTetramino(){
           }
        }
     }
-
-    tetraminos_.push_back(Tetramino(cellules,c,listeImage[rand()%listeImage.size()]));
+    //qDebug() << cellules.size();
+    //for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
+    //    qDebug() << itc->getLigne() << itc->getColonne();
+    //}
+    tetraminos_.push_back(Tetramino(cellules,c));
 
 }
 
@@ -123,6 +132,7 @@ bool GameControl::canWeMoveLeft(){
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
         int line = itc->getLigne();
         int colum = itc->getColonne();
+        //qDebug() << "colum: " << colum;
         if( colum == 0 || cellules_[line][colum-1]->getStatue()){
             return false;
         }
@@ -135,6 +145,7 @@ bool GameControl::canWeMoveRight(){
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
         int line = itc->getLigne();
         int colum = itc->getColonne();
+        //qDebug() << "colum: " << colum;
         if( colum == (grilleWidth-1) || cellules_[line][colum+1]->getStatue()){
             return false;
         }
@@ -144,35 +155,45 @@ bool GameControl::canWeMoveRight(){
 
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::incrementZ(){
-    if(canWeMoveDown()){
-        tetraminos_.back().translateZ();
-        tetraminos_.back().rollTetramino();
-    }else {
-        std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
-        for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
-            int line = itc->getLigne();
-            int colum = itc->getColonne();
-            cellules_[line][colum]->setStatue(true);// toute est faux au debut
+    if(c){
+        if(canWeMoveDown()){
+            tetraminos_.back().translateZ();
+            tetraminos_.back().rollTetramino();
+        }else {//if(!canWeMoveDown()){
+            std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+            for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+                int line = itc->getLigne();
+                int colum = itc->getColonne();
+                cellules_[line][colum]->setStatue(true);// toute est faux au debut
+            }
+            createTetramino();
         }
-        createTetramino();
-    }
 
-    // gestion des collision maintenand
-    affichage->SetTetraminosVector(tetraminos_);
+        // gestion des collision maintenand
+        affichage->SetTetraminosVector(tetraminos_);
+           // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
+   }
 }
 
 void GameControl::LeftRequest(){
+    qDebug() << "Left request";
     if(canWeMoveLeft()){
+        qDebug() << "YES";
         tetraminos_.back().moveLeft();
     }
 }
 
 void GameControl::RightRequest(){
+    qDebug() << "Right request";
     if(canWeMoveRight()){
+        qDebug() << "YES";
         tetraminos_.back().moveRight();
     }
 }
 
 void GameControl::RotateRequest(){
+    //c = false;
     qDebug() << "Rotate Request";
+    tetraminos_.back().Rotate();
+
 }
