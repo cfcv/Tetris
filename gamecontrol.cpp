@@ -1,6 +1,7 @@
 #include "gamecontrol.h"
 #include<math.h>
 #include <QTimer>
+#include <QMessageBox>
 
 GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QLabel* move, QObject *parent)
     : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines), move_(move)
@@ -9,9 +10,9 @@ GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* l
     grilleWidth=10;
     grilleHeith=20;
     pauseTime_ = 1000;
-    QTimer* timer2 = new QTimer(this);
-    connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
-    timer2->start(pauseTime_); //milisecondes
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(incrementZ()));
+    timer->start(pauseTime_); //milisecondes
        createAllTetraminos();
        createGrille();
        affichage->setParametersGrille(grilleWidth, grilleHeith);
@@ -366,6 +367,22 @@ bool GameControl::endGame(){
     return false;
 }
 
+void GameControl::RestartGame(){
+    for(int i = 0; i < grilleHeith; i++){
+        for(int j = 0; j < grilleWidth; j++){
+            cellules_[i][j]->setStatue(false);
+        }
+    }
+
+    tetraminos_.clear();
+    createTetramino();
+    timer->start(pauseTime_);
+
+    score_->setNum(0);
+    level_->setNum(1);
+    lines_->setNum(0);
+    move_->setText("None");
+}
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::Pause(){
     c = !c;
@@ -387,6 +404,16 @@ void GameControl::incrementZ(){
             score_->setNum(s);
             if(endGame()){
                 qDebug() << "end game";
+                QMessageBox messageB;
+                messageB.setWindowTitle("End Game");
+                messageB.setText("Do you want to play again?");
+                messageB.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                messageB.setDefaultButton(QMessageBox::No);
+                if(messageB.exec() == QMessageBox::No){
+                    exit(0);
+                } else {
+                    RestartGame();
+                }
             }else{
                 createTetramino();
             }

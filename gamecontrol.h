@@ -26,6 +26,7 @@ private:
    int grilleWidth;
    int grilleHeith;
    int pauseTime_;
+   QTimer* timer;
    PaintWidget* affichage;
    QLabel* score_, *level_, *lines_, *move_;
    std::vector<Tetramino> tetraminos_;
@@ -41,6 +42,7 @@ private:
    bool canWeMoveRight();
    bool canWeRotate();
    bool endGame();
+   void RestartGame();
    std::vector<QString> listeImage;
 };
 
