@@ -40,6 +40,7 @@ private:
    bool canWeMoveLeft();
    bool canWeMoveRight();
    bool canWeRotate();
+   bool endGame();
    std::vector<QString> listeImage;
 };
 

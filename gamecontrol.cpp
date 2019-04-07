@@ -354,6 +354,18 @@ bool GameControl::canWeMoveRight(){
     return true;
 }
 
+bool GameControl::endGame(){
+    std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
+    for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
+        int line = itc->getLigne();
+        //qDebug() << "colum: " << colum;
+        if(line >= 12){
+            return true;
+        }
+    }
+    return false;
+}
+
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::Pause(){
     c = !c;
@@ -373,7 +385,11 @@ void GameControl::incrementZ(){
             int s = score_->text().split(" ")[0].toInt();
             s++;
             score_->setNum(s);
-            createTetramino();
+            if(endGame()){
+                qDebug() << "end game";
+            }else{
+                createTetramino();
+            }
         }
 
         // gestion des collision maintenand
