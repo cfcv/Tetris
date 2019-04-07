@@ -170,12 +170,34 @@ void GameControl::createAllTetraminos(){
     std::vector< std::vector< std::tuple<int,int> > > aux_ZR_matrix;
     aux_ZR_matrix.push_back(aux_ZR_1);
 
+    //|-|
+    std::vector<std::tuple<int,int> > aux_O_1;
+    aux_O_1.push_back(std::tuple<int, int>(0,1));
+    aux_O_1.push_back(std::tuple<int, int>(-1,0));
+    aux_O_1.push_back(std::tuple<int, int>(-1,1));
+
+    aux_O_1.push_back(std::tuple<int, int>(0,1));
+    aux_O_1.push_back(std::tuple<int, int>(-1,0));
+    aux_O_1.push_back(std::tuple<int, int>(-1,1));
+
+    aux_O_1.push_back(std::tuple<int, int>(0,1));
+    aux_O_1.push_back(std::tuple<int, int>(-1,0));
+    aux_O_1.push_back(std::tuple<int, int>(-1,1));
+
+    aux_O_1.push_back(std::tuple<int, int>(0,1));
+    aux_O_1.push_back(std::tuple<int, int>(-1,0));
+    aux_O_1.push_back(std::tuple<int, int>(-1,1));
+
+    std::vector< std::vector< std::tuple<int,int> > > aux_O_matrix;
+    aux_O_matrix.push_back(aux_O_1);
+
     AllTetraminos_.push_back(aux_line_matrix);
     AllTetraminos_.push_back(aux_LF_matrix);
     AllTetraminos_.push_back(aux_LR_matrix);
     AllTetraminos_.push_back(aux_ZF_matrix);
     AllTetraminos_.push_back(aux_ZR_matrix);
     AllTetraminos_.push_back(aux_T_matrix);
+    AllTetraminos_.push_back(aux_O_matrix);
 }
 
 void GameControl::createGrille(){
@@ -215,7 +237,7 @@ void GameControl::createTetramino(){
     int colloneInit=4;
 
     std::vector<cellule> cellules;
-    std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[5];
+    std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[6];
     cellules.push_back(cellule(cellules_[ligneInit][colloneInit]->getCoordinates()[0], cellules_[ligneInit][colloneInit]->getCoordinates()[1], cellules_[ligneInit][colloneInit]->getCoordinates()[2], cellules_[ligneInit][colloneInit]->getCoordinates()[3], ligneInit, colloneInit));
 
     int ligneIndex = ligneInit + std::get<0>(tetramino_matrix[0][0]);
