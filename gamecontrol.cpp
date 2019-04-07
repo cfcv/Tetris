@@ -370,6 +370,9 @@ void GameControl::incrementZ(){
                 int colum = itc->getColonne();
                 cellules_[line][colum]->setStatue(true);// toute est faux au debut
             }
+            int s = score_->text().split(" ")[0].toInt();
+            s++;
+            score_->setNum(s);
             createTetramino();
         }
 
