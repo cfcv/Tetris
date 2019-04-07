@@ -237,7 +237,7 @@ void GameControl::createTetramino(){
     int colloneInit=4;
 
     std::vector<cellule> cellules;
-    std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[6];
+    std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[rand()%7];
     cellules.push_back(cellule(cellules_[ligneInit][colloneInit]->getCoordinates()[0], cellules_[ligneInit][colloneInit]->getCoordinates()[1], cellules_[ligneInit][colloneInit]->getCoordinates()[2], cellules_[ligneInit][colloneInit]->getCoordinates()[3], ligneInit, colloneInit));
 
     int ligneIndex = ligneInit + std::get<0>(tetramino_matrix[0][0]);
