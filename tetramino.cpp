@@ -63,11 +63,23 @@ void Tetramino::moveRight(){
     }
 }
 
+std::vector<std::tuple<int,int> > Tetramino::afterRotation(){
+    std::vector<std::tuple<int,int> > AR;
+    //AR.push_back(std::tuple<int,int>(tetramino_[0].getLigne(), tetramino_[0].getColonne()));
+    for(int i = 1; i < tetramino_.size(); i++){
+        int ligne = tetramino_[0].getLigne() + std::get<0>(rotations_[0][((current_rotation_+1)*3)+i-1]);
+        int colum = tetramino_[0].getColonne() + std::get<1>(rotations_[0][((current_rotation_+1)*3)+i-1]);
+        AR.push_back(std::tuple<int,int>(ligne, colum));
+    }
+
+    return AR;
+}
+
 void Tetramino::Rotate(){
     current_rotation_ += 1;
     current_rotation_ %= 4;
-    qDebug() << "current position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
-    qDebug() << "new position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
+    //qDebug() << "current position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
+    //qDebug() << "new position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
     //qDebug() << tetramino_.size();
     //qDebug() << std::get<0>(rotations_[0][(current_rotation_*3)]);
     for(int i = 1; i < tetramino_.size(); i++){

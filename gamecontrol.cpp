@@ -309,6 +309,19 @@ bool GameControl::canWeMoveDown(){
     return true;
 }
 
+bool GameControl::canWeRotate(){
+    std::vector<std::tuple<int,int> > Rotation_pos = tetraminos_.back().afterRotation();
+
+    for(std::vector<std::tuple<int,int> >::iterator itc=Rotation_pos.begin(); itc != Rotation_pos.end(); itc++){
+        int line = std::get<0>(*itc);
+        int colum = std::get<1>(*itc);
+        if(line < 0 || colum < 0 || colum > grilleWidth || cellules_[line][colum]->getStatue()){
+            return false;
+        }
+    }
+    return true;
+}
+
 bool GameControl::canWeMoveLeft(){
     std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
@@ -379,6 +392,8 @@ void GameControl::RightRequest(){
 void GameControl::RotateRequest(){
     //c = false;
     //qDebug() << "Rotate Request";
-    tetraminos_.back().Rotate();
+    if(canWeRotate()){
+        tetraminos_.back().Rotate();
+    }
 
 }

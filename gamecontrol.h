@@ -37,6 +37,7 @@ private:
    bool canWeMoveDown();
    bool canWeMoveLeft();
    bool canWeMoveRight();
+   bool canWeRotate();
    std::vector<QString> listeImage;
 };
 

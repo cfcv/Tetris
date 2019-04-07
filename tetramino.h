@@ -31,6 +31,7 @@ public:
     void translateZ();
     void translateX(QString sens);
     void translateY();
+    std::vector<std::tuple<int,int> > afterRotation();
     std::vector<cellule> getCellules();
 };
 
