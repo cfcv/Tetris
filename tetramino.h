@@ -8,7 +8,7 @@
 class Tetramino
 {
 public:
-    Tetramino(std::vector<cellule> positions, QColor c);
+    Tetramino(std::vector<cellule> positions, std::vector< std::vector<std::tuple<int,int> > > rot, QColor c);
     void draw();
     void rollTetramino();
     void moveLeft();
@@ -20,7 +20,9 @@ private:
     float translate_x ;
     float translate_y; // on ne vas peut-etre pas l'utiliser( a voir si on a le temps de faire des trucs)
     float translate_z ;
+    int current_rotation_;
     std::vector<cellule> tetramino_;
+    std::vector< std::vector<std::tuple<int,int> > > rotations_;
 
 public:
     float getTranslateZ();

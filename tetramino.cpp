@@ -1,12 +1,13 @@
 #include "tetramino.h"
 #include <QTimer>
 
-Tetramino::Tetramino(std::vector<cellule> positions, QColor c):color_(c),tetramino_(positions)
+Tetramino::Tetramino(std::vector<cellule> positions,  std::vector< std::vector<std::tuple<int,int> > > rot, QColor c)
+    :color_(c),tetramino_(positions), rotations_(rot)
 {
-
-translate_z = 0;
-translate_x = 0;
-translate_y = 0;
+    current_rotation_ = 0;
+    translate_z = 0;
+    translate_x = 0;
+    translate_y = 0;
 }
 void Tetramino::draw(){
 //system("pause");
@@ -63,6 +64,16 @@ void Tetramino::moveRight(){
 }
 
 void Tetramino::Rotate(){
+    current_rotation_ += 1;
+    current_rotation_ %= 4;
+    qDebug() << "current position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
+    qDebug() << "new position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
+    //qDebug() << tetramino_.size();
+    //qDebug() << std::get<0>(rotations_[0][(current_rotation_*3)]);
+    for(int i = 1; i < tetramino_.size(); i++){
+        tetramino_[i].rotate(tetramino_[0].getLigne() + std::get<0>(rotations_[0][(current_rotation_*3)+i-1]), tetramino_[0].getColonne() + std::get<1>(rotations_[0][(current_rotation_*3)+i-1]));
+    }
+    return;
     //qDebug() << "PIVOT: ";
     std::vector<QVector3D> aux = tetramino_[0].getCoordinates();
     //qDebug() << aux[0].x() << " " << aux[0].y() << " " << aux[0].z();

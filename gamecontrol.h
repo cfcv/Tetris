@@ -18,15 +18,20 @@ public slots:
     void LeftRequest();
     void RightRequest();
     void RotateRequest();
+    void Pause();
 private:
     bool c;
    int cubeWidth;
    int grilleWidth;
    int grilleHeith;
+   int pauseTime_;
    PaintWidget* affichage;
    std::vector<Tetramino> tetraminos_;
    std::vector<std::vector<cellule*> > cellules_;
+
+   std::vector< std::vector<std::vector<std::tuple<int, int> > > > AllTetraminos_;
    void createTetramino();
+   void createAllTetraminos();
    void createGrille();
    float getZmax();
    bool canWeMoveDown();

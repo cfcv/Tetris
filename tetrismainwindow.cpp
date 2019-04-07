@@ -15,6 +15,7 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
     connect(this, SIGNAL(LeftSignal()), gc_, SLOT(LeftRequest()));
     connect(this, SIGNAL(RightSignal()), gc_, SLOT(RightRequest()));
     connect(this, SIGNAL(RotateSignal()), gc_, SLOT(RotateRequest()));
+    connect(this, SIGNAL(PauseSignal()), gc_, SLOT(Pause()));
 }
 
 TetrisMainWindow::~TetrisMainWindow()
@@ -41,6 +42,10 @@ void TetrisMainWindow::keyPressEvent(QKeyEvent * event){
         case Qt::Key_R:{
             qDebug() << "rotate";
             emit RotateSignal();
+            break;
+        }
+    case Qt::Key_P:{
+            emit PauseSignal();
             break;
         }
         case Qt::Key_Q:{
