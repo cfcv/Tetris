@@ -102,23 +102,23 @@ void cellule::rotate(float Xpivot, float Ypivot){
 
     ligne_ = Xpivot;
     colonne_ = Ypivot;
-    qDebug() << "current position: " << ancien_ligne << ancien_colonne;
-    qDebug() << "new position: " << ligne_ << colonne_;
+    //qDebug() << "current position: " << ancien_ligne << ancien_colonne;
+    //qDebug() << "new position: " << ligne_ << colonne_;
 
     int deltaY = ligne_ - ancien_ligne; //if it is posivite: the cellule goes UP, otherwise DOWN
     int deltaX= colonne_ - ancien_colonne; //if it is positive: the cellule goes RIGHT otherwie it goes LEFT
-    qDebug() << "current center: " << minX << minZ;
+    //qDebug() << "current center: " << minX << minZ;
 
     minX += cubeWidth*deltaX;
     minZ += -(deltaY*cubeWidth);
-    qDebug() << "new center: " << minX << minZ;
+    //qDebug() << "new center: " << minX << minZ;
     return;
 
-    qDebug() << "pivot dedans la fonction: " << Xpivot << Ypivot;
-    qDebug() << "Ancien min: " << minX << minZ;
+    //qDebug() << "pivot dedans la fonction: " << Xpivot << Ypivot;
+    //qDebug() << "Ancien min: " << minX << minZ;
     float newX = Xpivot + Ypivot - coordinates_[0].z();
     float newZ = Ypivot - Xpivot + coordinates_[0].x();
-    qDebug() << "new x et Z: " << newX << newZ;
+    //qDebug() << "new x et Z: " << newX << newZ;
     coordinates_[0].setX(newX);
     coordinates_[0].setZ(newZ);
     minX = newX;
