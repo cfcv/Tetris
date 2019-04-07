@@ -4,12 +4,13 @@
 #include <QObject>
 #include "paintwidget.h"
 #include <QWidget>
+#include <QLabel>
 
 class GameControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit GameControl(PaintWidget* p = nullptr, QObject *parent = nullptr);
+    explicit GameControl(PaintWidget* p = nullptr, QLabel* score = nullptr, QLabel* level = nullptr, QLabel* lines = nullptr, QLabel* move = nullptr, QObject *parent = nullptr);
 
 signals:
 
@@ -26,6 +27,7 @@ private:
    int grilleHeith;
    int pauseTime_;
    PaintWidget* affichage;
+   QLabel* score_, *level_, *lines_, *move_;
    std::vector<Tetramino> tetraminos_;
    std::vector<std::vector<cellule*> > cellules_;
 

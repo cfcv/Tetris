@@ -11,7 +11,7 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     vc_ = new VideoCrontrol(ui->image_label);
-    gc_ = new GameControl(ui->paintArea);
+    gc_ = new GameControl(ui->paintArea, ui->score_label, ui->level_label, ui->line_label, ui->move_label);
     connect(this, SIGNAL(LeftSignal()), gc_, SLOT(LeftRequest()));
     connect(this, SIGNAL(RightSignal()), gc_, SLOT(RightRequest()));
     connect(this, SIGNAL(RotateSignal()), gc_, SLOT(RotateRequest()));

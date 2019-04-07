@@ -2,15 +2,16 @@
 #include<math.h>
 #include <QTimer>
 
-GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affichage(p)
+GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QLabel* move, QObject *parent)
+    : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines), move_(move)
 {
     cubeWidth=10;
     grilleWidth=10;
     grilleHeith=20;
     pauseTime_ = 1000;
     QTimer* timer2 = new QTimer(this);
-       connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
-       timer2->start(pauseTime_); //milisecondes
+    connect(timer2, SIGNAL(timeout()), this, SLOT(incrementZ()));
+    timer2->start(pauseTime_); //milisecondes
        createAllTetraminos();
        createGrille();
        affichage->setParametersGrille(grilleWidth, grilleHeith);
@@ -20,6 +21,11 @@ GameControl::GameControl(PaintWidget* p, QObject *parent) : QObject(parent),affi
            srand(time(NULL));
            affichage->SetTetraminosVector(tetraminos_);
     c = true;
+
+    score->setNum(0);
+    level_->setNum(1);
+    lines_->setNum(0);
+    move_->setText("None");
 }
 float GameControl::getZmax()
 {
