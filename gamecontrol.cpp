@@ -244,8 +244,8 @@ void GameControl::createTetramino(){
         }
         QColor c(rgb[0],rgb[1],rgb[2]);
 
-    int ligneInit=12;
-    int colloneInit=4;
+    int ligneInit=17;
+    int colloneInit=5;
 
     std::vector<cellule> cellules;
     std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[rand()%7];
@@ -364,7 +364,7 @@ bool GameControl::endGame(){
     for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
         int line = itc->getLigne();
         //qDebug() << "colum: " << colum;
-        if(line >= 12){
+        if(line >= 17){
             return true;
         }
     }
@@ -468,3 +468,16 @@ void GameControl::RotateRequest(){
     }
 
 }
+
+void GameControl::MoveSlowOrSpeed()
+{
+    if(pauseTime_==1000)
+        pauseTime_=500;
+    else if(pauseTime_==500)
+        pauseTime_=100;
+    else
+        pauseTime_=1000;
+    timer->start(pauseTime_);
+    qDebug()<<"la valleur du timer et de:  "<<pauseTime_;
+}
+

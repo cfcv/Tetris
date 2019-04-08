@@ -16,6 +16,8 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
     connect(this, SIGNAL(RightSignal()), gc_, SLOT(RightRequest()));
     connect(this, SIGNAL(RotateSignal()), gc_, SLOT(RotateRequest()));
     connect(this, SIGNAL(PauseSignal()), gc_, SLOT(Pause()));
+    connect(this, SIGNAL(MoveSlowOrSpeed()), gc_, SLOT(MoveSlowOrSpeed()));
+
 }
 
 TetrisMainWindow::~TetrisMainWindow()
@@ -48,10 +50,16 @@ void TetrisMainWindow::keyPressEvent(QKeyEvent * event){
             emit PauseSignal();
             break;
         }
+    case Qt::Key_F:{
+
+        emit MoveSlowOrSpeed();
+        break;
+    }
         case Qt::Key_Q:{
             exit(0);
             break;
         }
+
         // Cas par defaut
         default:
         {

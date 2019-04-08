@@ -31,6 +31,7 @@ signals:
     void RightSignal();
     void RotateSignal();
     void PauseSignal();
+    void MoveSlowOrSpeed();
 };
 
 #endif // TETRISMAINWINDOW_H

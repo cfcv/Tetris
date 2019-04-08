@@ -20,6 +20,7 @@ public slots:
     void RightRequest();
     void RotateRequest();
     void Pause();
+    void MoveSlowOrSpeed();
 private:
     bool c;
    int cubeWidth;
