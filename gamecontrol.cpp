@@ -3,9 +3,14 @@
 #include <QTimer>
 #include <QMessageBox>
 
-GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QLabel* move, QObject *parent)
-    : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines), move_(move)
+GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QLabel* move, QObject *parent,QRadioButton *bouton1,QRadioButton *bouton2,QRadioButton *bouton3)
+    : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines), move_(move),bouton1_(bouton1),bouton2_(bouton2),bouton3_(bouton3)
 {
+
+//    bouton1_->setChecked(true);
+//  //  bouton2_->setChecked(false);
+//   // bouton3_->setChecked(true);
+
     cubeWidth=10;
     grilleWidth=10;
     grilleHeith=20;
@@ -481,3 +486,9 @@ void GameControl::MoveSlowOrSpeed()
     qDebug()<<"la valleur du timer et de:  "<<pauseTime_;
 }
 
+void GameControl::MoveSlowOrSpeed(int time)
+{
+    pauseTime_=time;
+    timer->start(pauseTime_);
+    qDebug()<<"la valleur du timer et de:  "<<pauseTime_;
+}

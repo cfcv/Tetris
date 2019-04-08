@@ -5,12 +5,14 @@
 #include "paintwidget.h"
 #include <QWidget>
 #include <QLabel>
+#include <QRadioButton>
+
 
 class GameControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit GameControl(PaintWidget* p = nullptr, QLabel* score = nullptr, QLabel* level = nullptr, QLabel* lines = nullptr, QLabel* move = nullptr, QObject *parent = nullptr);
+    explicit GameControl(PaintWidget* p = nullptr, QLabel* score = nullptr, QLabel* level = nullptr, QLabel* lines = nullptr, QLabel* move = nullptr, QObject *parent = nullptr,QRadioButton *bouton1=nullptr,QRadioButton *bouton2=nullptr,QRadioButton *bouton3=nullptr);
 
 signals:
 
@@ -21,6 +23,7 @@ public slots:
     void RotateRequest();
     void Pause();
     void MoveSlowOrSpeed();
+    void MoveSlowOrSpeed(int time);
 private:
     bool c;
    int cubeWidth;
@@ -31,6 +34,7 @@ private:
    QTimer* timer;
    PaintWidget* affichage;
    QLabel* score_, *level_, *lines_, *move_;
+   QRadioButton *bouton1_, *bouton2_, *bouton3_;
    std::vector<Tetramino> tetraminos_;
    std::vector<std::vector<cellule*> > cellules_;
 
