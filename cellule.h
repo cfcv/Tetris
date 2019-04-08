@@ -31,6 +31,9 @@ private:
     float minZ;
     float planY;
     static float cubeWidth;
+    QString path;
+    QImage texture_;
+    GLuint m_TextureID ;
 
 public:
     bool getStatue(){return  statue_;}

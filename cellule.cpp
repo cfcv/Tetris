@@ -2,6 +2,8 @@
 
 cellule::cellule(QVector3D p1,QVector3D p2,QVector3D p3,QVector3D p4,int ligne,int colonnes)
 {
+    path="C:\\Users\\yayak\\Desktop\\cours_fise2\\Tetris\\image\\inc.jpg";
+    texture_=QGLWidget::convertToGLFormat(QImage(path));
             coordinates_.push_back(p1);
             coordinates_.push_back(p2);
             coordinates_.push_back(p3);
@@ -31,62 +33,67 @@ void cellule::draw()
 {
     //get the minimum and maximum x and minimal and maximum z
     //glClear(GL_DEPTH_BUFFER_BIT);
-
+    glEnable(GL_TEXTURE_2D);
+    glGenTextures( 1, &m_TextureID );
+    glBindTexture( GL_TEXTURE_2D, m_TextureID );
+    glTexImage2D( GL_TEXTURE_2D, 0, 4, texture_.width(),texture_.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_.bits() );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     //glLoadIdentity();
     //glTranslatef(0.0, 0.0, -35.0f);
     glBegin(GL_QUADS);
    // glColor3ub(0, 0, 255);
 
      // face d'en bas
-    glVertex3f(  minX,   planY,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
-    glVertex3f(  minX,   planY,   minZ+cubeWidth);
+    glTexCoord2d(0,1);glVertex3f(  minX,   planY,   minZ);
+    glTexCoord2d(0,0);glVertex3f(  minX+cubeWidth,   planY,   minZ);
+    glTexCoord2d(1,0);glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
+    glTexCoord2d(1,1);glVertex3f(  minX,   planY,   minZ+cubeWidth);
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y(),   coordinates_[0].z());
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
     //glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z());
     //glVertex3f(  coordinates_[3].x(),   coordinates_[3].y(),   coordinates_[3].z());
      //face d'en haux
-    glVertex3f(  minX,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
-    glVertex3f(  minX,   planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(0,1);glVertex3f(  minX,   planY+cubeWidth,   minZ);
+    glTexCoord2d(0,0);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
+    glTexCoord2d(1,0);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(1,1);glVertex3f(  minX,   planY+cubeWidth,   minZ+cubeWidth);
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y()+10,   coordinates_[1].z());
     //glVertex3f(  coordinates_[2].x(),   coordinates_[2].y()+10,   coordinates_[2].z());
     //glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z());
     // face en face
-    glVertex3f(  minX,   planY+cubeWidth,   minZ+cubeWidth);
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
-    glVertex3f(  minX,   planY,   minZ+cubeWidth);
+    glTexCoord2d(0,1);glVertex3f(  minX,   planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(0,0);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(1,0);glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
+    glTexCoord2d(1,1);glVertex3f(  minX,   planY,   minZ+cubeWidth);
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z()+10);
     //glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z()+10);
     //glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z());
     // face derriere
-    glVertex3f(  minX,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ);
-    glVertex3f(  minX,   planY,   minZ);
+    glTexCoord2d(0,1);glVertex3f(  minX,   planY+cubeWidth,   minZ);
+    glTexCoord2d(0,0);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
+    glTexCoord2d(1,0);glTexCoord2d(1,0);glVertex3f(  minX+cubeWidth,   planY,   minZ);
+    glTexCoord2d(1,1);glVertex3f(  minX,   planY,   minZ);
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z()-10);
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
     //glVertex3f(  coordinates_[2].x(),   coordinates_[2].y(),   coordinates_[2].z());
     //glVertex3f(  coordinates_[3].x(),   coordinates_[3].y()+10,   coordinates_[3].z()-10);
     // face a gauche
-    glVertex3f(  minX,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX,  planY+cubeWidth,   minZ+cubeWidth);
-    glVertex3f(  minX,   planY,   minZ+cubeWidth);
-    glVertex3f(  minX,   planY,   minZ);
+    glTexCoord2d(0,1);glVertex3f(  minX,   planY+cubeWidth,   minZ);
+    glTexCoord2d(0,0);glVertex3f(  minX,  planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(1,0);glVertex3f(  minX,   planY,   minZ+cubeWidth);
+    glTexCoord2d(1,1);glVertex3f(  minX,   planY,   minZ);
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y()+10,   coordinates_[1].z());
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y()+10,   coordinates_[0].z());
     //glVertex3f(  coordinates_[0].x(),   coordinates_[0].y(),   coordinates_[0].z());
     //glVertex3f(  coordinates_[1].x(),   coordinates_[1].y(),   coordinates_[1].z());
     // face a droite
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
-    glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ);
-    glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
+    glTexCoord2d(0,1);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ+cubeWidth);
+    glTexCoord2d(0,0);glVertex3f(  minX+cubeWidth,   planY+cubeWidth,   minZ);
+    glTexCoord2d(1,0);glVertex3f(  minX+cubeWidth,   planY,   minZ);
+    glTexCoord2d(1,1);glVertex3f(  minX+cubeWidth,   planY,   minZ+cubeWidth);
     //glVertex3f(  coordinates_[1].x()+10,   coordinates_[1].y()+10,   coordinates_[1].z());
     //glVertex3f(  coordinates_[0].x()+10,   coordinates_[0].y()+10,   coordinates_[0].z());
     //glVertex3f(  coordinates_[0].x()+10,   coordinates_[0].y(),   coordinates_[0].z());
@@ -94,6 +101,7 @@ void cellule::draw()
     //glColor3ub(255, 255, 0);
 
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void cellule::rotate(float Xpivot, float Ypivot){
