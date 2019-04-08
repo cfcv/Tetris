@@ -26,6 +26,7 @@ private:
    int grilleWidth;
    int grilleHeith;
    int pauseTime_;
+   std::vector<int> remplissage_;
    QTimer* timer;
    PaintWidget* affichage;
    QLabel* score_, *level_, *lines_, *move_;
@@ -43,6 +44,7 @@ private:
    bool canWeRotate();
    bool endGame();
    void RestartGame();
+   void RemoveLine(int i);
    std::vector<QString> listeImage;
 };
 

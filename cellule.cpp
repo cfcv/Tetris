@@ -30,7 +30,7 @@ float cellule::cubeWidth = 10;
 void cellule::draw()
 {
     //get the minimum and maximum x and minimal and maximum z
-    glClear(GL_DEPTH_BUFFER_BIT);
+    //glClear(GL_DEPTH_BUFFER_BIT);
 
     //glLoadIdentity();
     //glTranslatef(0.0, 0.0, -35.0f);

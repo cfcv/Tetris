@@ -27,6 +27,10 @@ GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* l
     level_->setNum(1);
     lines_->setNum(0);
     move_->setText("None");
+    remplissage_.resize(grilleHeith);
+    for(int i =0 ; i < grilleHeith; i++){
+        remplissage_[i] = 0;
+    }
 }
 float GameControl::getZmax()
 {
@@ -383,6 +387,10 @@ void GameControl::RestartGame(){
     lines_->setNum(0);
     move_->setText("None");
 }
+
+void GameControl::RemoveLine(int i){
+
+}
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::Pause(){
     c = !c;
@@ -393,15 +401,26 @@ void GameControl::incrementZ(){
             tetraminos_.back().translateZ();
             tetraminos_.back().rollTetramino();
         }else {//if(!canWeMoveDown()){
+            std::vector<int> lines;
             std::vector<cellule> current_cellules = tetraminos_.back().getCellules();
             for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
                 int line = itc->getLigne();
                 int colum = itc->getColonne();
+                remplissage_[line] += 1;
                 cellules_[line][colum]->setStatue(true);// toute est faux au debut
+                if(remplissage_[line] == grilleWidth){
+                    lines.push_back(line);
+                    qDebug() << "ligne rempli: " << line;
+                }
             }
             int s = score_->text().split(" ")[0].toInt();
             s++;
             score_->setNum(s);
+            for(std::vector<int>::iterator itc = lines.begin(); itc!=lines.end(); ++itc){
+                RemoveLine(*itc);
+            }
+
+
             if(endGame()){
                 qDebug() << "end game";
                 QMessageBox messageB;
