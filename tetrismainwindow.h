@@ -6,6 +6,7 @@
 #include "videocrontrol.h"
 #include "gamecontrol.h"
 
+
 namespace Ui {
 class TetrisMainWindow;
 }
@@ -20,23 +21,20 @@ public:
 
 private:
     Ui::TetrisMainWindow *ui;
-    VideoCrontrol* vc_;
-    GameControl* gc_;
+    VideoCrontrol* vc_;             //variable pour instancier la classe VideoControl
+    GameControl* gc_;               //variable pour instancier la classe GameControl
 
 protected:
     void keyPressEvent(QKeyEvent* event);
 
 signals:
-    void LeftSignal();
-    void RightSignal();
-    void RotateSignal();
+    void LeftSignal();              //Signal pour notifier le GameControl pour faire la translation vers la gauche du tetramino courant
+    void RightSignal();             //Signal pour notifier le GameControl pour faire la translation vers la droite du tetramino courant
+    void RotateSignal();            //Signal pour notifier le GameControl pour rotationer le tetramino courant
     void PauseSignal();
-    void MoveSlowOrSpeed();
+    void MoveSlowOrSpeed();         //Signal pour notifier le GameControl pour modifier la vitesse
     void changeNiveau(int);
-private slots:
-    void on_radioButton_1_clicked();
-    void on_radioButton_2_clicked();
-    void on_radioButton_3_clicked();
+
 };
 
 #endif // TETRISMAINWINDOW_H

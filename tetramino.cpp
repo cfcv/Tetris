@@ -78,26 +78,15 @@ std::vector<std::tuple<int,int> > Tetramino::afterRotation(){
 void Tetramino::Rotate(){
     current_rotation_ += 1;
     current_rotation_ %= 4;
-    //qDebug() << "current position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
-    //qDebug() << "new position: " << tetramino_[0].getLigne() << tetramino_[0].getColonne();
-    //qDebug() << tetramino_.size();
-    //qDebug() << std::get<0>(rotations_[0][(current_rotation_*3)]);
+
     for(int i = 1; i < tetramino_.size(); i++){
         tetramino_[i].rotate(tetramino_[0].getLigne() + std::get<0>(rotations_[0][(current_rotation_*3)+i-1]), tetramino_[0].getColonne() + std::get<1>(rotations_[0][(current_rotation_*3)+i-1]));
     }
     return;
-    //qDebug() << "PIVOT: ";
     std::vector<QVector3D> aux = tetramino_[0].getCoordinates();
-    //qDebug() << aux[0].x() << " " << aux[0].y() << " " << aux[0].z();
-    //qDebug() << aux[1].x() << " " << aux[1].y() << " " << aux[1].z();
-    //qDebug() << aux[2].x() << " " << aux[2].y() << " " << aux[2].z();
-    //qDebug() << aux[3].x() << " " << aux[3].y() << " " << aux[3].z();
-    //float sum = aux[0].x() + aux[1].x() + aux[2].x() + aux[3].x();
-    //qDebug() << "result" << sum/4.0;
+
     QVector3D pivot = tetramino_[0].getCenter();
-    //qDebug() << "Point pivot: " << pivot.x() << " " << pivot.y() << " " << pivot.z();
     for(int i = 0; i < tetramino_.size(); ++i){
-        //qDebug() << "Cellule " << i;
         tetramino_[i].rotate(pivot.x(), pivot.z());
     }
 }

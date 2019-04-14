@@ -11,14 +11,17 @@ TetrisMainWindow::TetrisMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     vc_ = new VideoCrontrol(ui->image_label);
-    ui->radioButton_1->setChecked(true);
-    gc_ = new GameControl(ui->paintArea, ui->score_label, ui->level_label, ui->line_label, ui->move_label,ui->radioButton_1,ui->radioButton_2,ui->radioButton_3);
+    gc_ = new GameControl(ui->paintArea, ui->score_label, ui->level_label, ui->line_label);
     connect(this, SIGNAL(LeftSignal()), gc_, SLOT(LeftRequest()));
     connect(this, SIGNAL(RightSignal()), gc_, SLOT(RightRequest()));
     connect(this, SIGNAL(RotateSignal()), gc_, SLOT(RotateRequest()));
     connect(this, SIGNAL(PauseSignal()), gc_, SLOT(Pause()));
     connect(this, SIGNAL(MoveSlowOrSpeed()), gc_, SLOT(MoveSlowOrSpeed()));
-    connect(this, SIGNAL(changeNiveau(int)), gc_, SLOT(MoveSlowOrSpeed(int)));
+
+
+    connect(vc_, SIGNAL(VideoLeftSignal()), gc_, SLOT(LeftRequest()));
+    connect(vc_, SIGNAL(VideoRightSignal()), gc_, SLOT(RightRequest()));
+    connect(vc_, SIGNAL(VideoRotateSignal()), gc_, SLOT(RotateRequest()));
 
 }
 
@@ -52,8 +55,8 @@ void TetrisMainWindow::keyPressEvent(QKeyEvent * event){
             emit PauseSignal();
             break;
         }
-    case Qt::Key_F:{
-
+    case Qt::Key_F:
+    {
         emit MoveSlowOrSpeed();
         break;
     }
@@ -76,36 +79,3 @@ void TetrisMainWindow::keyPressEvent(QKeyEvent * event){
   //  updateGL();
 }
 
-void TetrisMainWindow::on_radioButton_1_clicked()
-{
-    if(ui->radioButton_1->isChecked())
-    {
-        emit changeNiveau(1000);
-        qDebug()<<"checked 1";
-        ui->level_label->setText("1");
-    }
-}
-
-void TetrisMainWindow::on_radioButton_2_clicked()
-{
-    if(ui->radioButton_2->isChecked())
-    {
-        emit changeNiveau(500);
-
-        qDebug()<<"checked 2";
-        ui->level_label->setText("2");
-
-    }
-}
-
-void TetrisMainWindow::on_radioButton_3_clicked()
-{
-    if(ui->radioButton_3->isChecked())
-    {
-        emit changeNiveau(100);
-
-        qDebug()<<"checked 3";
-        ui->level_label->setText("3");
-
-    }
-}

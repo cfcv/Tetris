@@ -28,12 +28,18 @@ SOURCES += \
         main.cpp \
         tetrismainwindow.cpp \
     paintwidget.cpp \
-    cellule.cpp
+    cellule.cpp \
+    gamecontrol.cpp \
+    videocrontrol.cpp \
+    tetramino.cpp
 
 HEADERS += \
         tetrismainwindow.h \
     paintwidget.h \
-    cellule.h
+    cellule.h \
+    gamecontrol.h \
+    videocrontrol.h \
+    tetramino.h
 
 FORMS += \
         tetrismainwindow.ui
@@ -57,4 +63,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     ressourses.qrc
 
-DISTFILES +=
+DISTFILES += \
+    uml.qmodel

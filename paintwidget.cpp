@@ -14,13 +14,7 @@ const float MAX_DIMENSION     = 50.0f;
 PaintWidget::PaintWidget(QWidget* parent) : QOpenGLWidget(parent)
 {
 
-    //QTimer* timer = new QTimer(this);
-    //connect(timer, SIGNAL(timeout()), this, SLOT(incrementZ()));
-    //timer->start(1000); //milisecondes
-  //  setFixedSize(WIN_WIDTH, WIN_HEIGHT);
-//    for (int i=0;i<15;i++)
-//        for(int j=0;j<9;j++)
-//            //cellules[i][j]=new cellule(0,0,0);
+
 }
 
 void PaintWidget::moveCircle(int direction){
@@ -43,7 +37,6 @@ void PaintWidget::moveCircle(int direction){
 void PaintWidget::initializeGL()
 {
 
-    // QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
 
 
 //    // Reglage de la couleur de fond
@@ -63,6 +56,7 @@ void PaintWidget::paintGL()
 
     drawEnvironment();
     drawTetraminos();
+    //qDebug() << "Max line: " << maxLine_;
 }
 void PaintWidget::resizeGL(int width, int height)
 {
@@ -76,9 +70,7 @@ void PaintWidget::resizeGL(int width, int height)
 
     if(width != 0)
         gluPerspective(70, 1 , 1, 1000);
-        //gluPerspective(70, width/height , 1, 1000);
     gluLookAt(0.0, 60.0, -30.0, 0.0, -25.0, -90.0, 0, 1, 0);
-       // glOrtho(-MAX_DIMENSION, MAX_DIMENSION, -MAX_DIMENSION * height / static_cast<float>(width), MAX_DIMENSION * height / static_cast<float>(width), -MAX_DIMENSION * 2.0f, MAX_DIMENSION * 2.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -147,11 +139,19 @@ void PaintWidget::drawEnvironment(){
 
 
 void PaintWidget::drawTetraminos(){
-    for(int i=0; i < tetraminos_.size();i++){
-        glPushMatrix();
-        glTranslated(tetraminos_[i].getTranslateX(),tetraminos_[i].getTranslateY(),tetraminos_[i].getTranslateZ());
-        tetraminos_[i].draw();
-        glPopMatrix();
+
+
+    glPushMatrix();
+    glTranslated(tetraminos_.back().getTranslateX(),tetraminos_.back().getTranslateY(),tetraminos_.back().getTranslateZ());
+    tetraminos_.back().draw();
+    glPopMatrix();
+
+    for(int i = 0; i <= maxLine_; i++){
+        for(int j = 0; j < cellules_[i].size(); ++j){
+            if(cellules_[i][j]->getStatue()){
+                cellules_[i][j]->draw();
+            }
+        }
     }
     update();
 }
@@ -169,7 +169,8 @@ void PaintWidget::setGrille(std::vector<std::vector<cellule*> > & grille){
     cellules_ = grille;
 }
 
-void PaintWidget::setParametersGrille(int gW, int gH){
+void PaintWidget::setParametersGrille(int gW, int gH, int ml){
     grilleHeith_ = gH;
     grilleWidth_ = gW;
+    maxLine_ = ml;
 }

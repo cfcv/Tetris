@@ -3,14 +3,9 @@
 #include <QTimer>
 #include <QMessageBox>
 
-GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QLabel* move, QObject *parent,QRadioButton *bouton1,QRadioButton *bouton2,QRadioButton *bouton3)
-    : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines), move_(move),bouton1_(bouton1),bouton2_(bouton2),bouton3_(bouton3)
+GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* lines, QObject *parent)
+    : QObject(parent),affichage(p),score_(score), level_(level), lines_(lines)
 {
-
-//    bouton1_->setChecked(true);
-//  //  bouton2_->setChecked(false);
-//   // bouton3_->setChecked(true);
-
     cubeWidth=10;
     grilleWidth=10;
     grilleHeith=20;
@@ -20,7 +15,8 @@ GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* l
     timer->start(pauseTime_); //milisecondes
        createAllTetraminos();
        createGrille();
-       affichage->setParametersGrille(grilleWidth, grilleHeith);
+       maxLine_ = 0;
+       affichage->setParametersGrille(grilleWidth, grilleHeith, maxLine_);
        affichage->setGrille(cellules_);
 
            createTetramino();
@@ -31,28 +27,11 @@ GameControl::GameControl(PaintWidget* p, QLabel* score, QLabel* level, QLabel* l
     score->setNum(0);
     level_->setNum(1);
     lines_->setNum(0);
-    move_->setText("None");
+    //move_->setText("None");
     remplissage_.resize(grilleHeith);
     for(int i =0 ; i < grilleHeith; i++){
         remplissage_[i] = 0;
     }
-}
-float GameControl::getZmax()
-{
-    std::vector<cellule> cellules=tetraminos_.back().getCellules();
-    float Max=cellules.begin()->getCoordinates().begin()->z();
-    for(std::vector<cellule>::iterator itr=cellules.begin();itr!=cellules.end();++itr)
-    {
-        std::vector<QVector3D> coordinates=itr->getCoordinates();
-        float max=coordinates.begin()->z();
-        for (std::vector<QVector3D>::iterator it = coordinates.begin() ; it != coordinates.end(); ++it)
-        {
-          max=(max<it->z())? it->z():max;
-        }
-        Max=(Max<max)? max:Max;
-
-    }
-    return Max;
 }
 
 /* Fonction que crée et stock toutes les
@@ -250,7 +229,7 @@ void GameControl::createTetramino(){
         QColor c(rgb[0],rgb[1],rgb[2]);
 
     int ligneInit=17;
-    int colloneInit=5;
+    int colloneInit=4;
 
     std::vector<cellule> cellules;
     std::vector< std::vector< std::tuple<int,int> > > tetramino_matrix = AllTetraminos_[rand()%7];
@@ -267,16 +246,14 @@ void GameControl::createTetramino(){
     ligneIndex = ligneInit + std::get<0>(tetramino_matrix[0][2]);
     colloneIndex = colloneInit + std::get<1>(tetramino_matrix[0][2]);
     cellules.push_back(cellule(cellules_[ligneIndex][colloneIndex]->getCoordinates()[0], cellules_[ligneIndex][colloneIndex]->getCoordinates()[1], cellules_[ligneIndex][colloneIndex]->getCoordinates()[2], cellules_[ligneIndex][colloneIndex]->getCoordinates()[3], ligneIndex, colloneIndex));
-
+    cellules[0].setColor(c);
+    cellules[1].setColor(c);
+    cellules[2].setColor(c);
+    cellules[3].setColor(c);
     tetraminos_.push_back(Tetramino(cellules, tetramino_matrix, c));
     //qDebug() << AllTetraminos_.size();
     return;
-    //cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    //cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    //cellules.push_back(cellule( cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[0],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[1],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[2],cellules_[ligneInit+1][colloneInit-1]->getCoordinates()[3],ligneInit,colloneInit));
-    //cellules.push_back(cellule( cellules_[ligneInit-1][colloneInit]->getCoordinates()[0],cellules_[ligneInit-1][colloneInit]->getCoordinates()[1],cellules_[ligneInit-1][colloneInit]->getCoordinates()[2],cellules_[ligneInit-1][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
-    //tetraminos_.push_back(Tetramino(cellules,c));
-    //return;
+
 
     //std::vector<cellule> cellules;
     cellules.push_back(cellule( cellules_[ligneInit][colloneInit]->getCoordinates()[0],cellules_[ligneInit][colloneInit]->getCoordinates()[1],cellules_[ligneInit][colloneInit]->getCoordinates()[2],cellules_[ligneInit][colloneInit]->getCoordinates()[3],ligneInit,colloneInit));
@@ -304,11 +281,7 @@ void GameControl::createTetramino(){
           }
        }
     }
-    //qDebug() << cellules.size();
-    //for(std::vector<cellule>::iterator itc = cellules.begin(); itc != cellules.end(); ++itc){
-    //    qDebug() << itc->getLigne() << itc->getColonne();
-    //}
-    //tetraminos_.push_back(Tetramino(cellules,c));
+
 
 }
 
@@ -385,16 +358,30 @@ void GameControl::RestartGame(){
 
     tetraminos_.clear();
     createTetramino();
-    timer->start(pauseTime_);
+    timer->start(1000);
 
     score_->setNum(0);
     level_->setNum(1);
     lines_->setNum(0);
-    move_->setText("None");
+    maxLine_= 0;
+    for(int i = 0; i < grilleHeith; ++i){
+        remplissage_[i] = 0;
+    }
+
 }
 
 void GameControl::RemoveLine(int i){
-
+    qDebug() << i << "maxL: " << maxLine_;
+    for(int l = i; l <= maxLine_; l++){
+        remplissage_[l] = remplissage_[l+1];
+        for(int j = 0; j < cellules_[l].size(); j++){
+            if(cellules_[l+1][j]->getStatue()){
+                cellules_[l][j]->setColor(cellules_[l+1][j]->getColor());
+            } else{
+                cellules_[l][j]->setStatue(false);
+            }
+        }
+    }
 }
 //--------------- SLOTS DEFINITION -----------------
 void GameControl::Pause(){
@@ -411,22 +398,32 @@ void GameControl::incrementZ(){
             for(std::vector<cellule>::iterator itc=current_cellules.begin(); itc != current_cellules.end();++itc){
                 int line = itc->getLigne();
                 int colum = itc->getColonne();
+                maxLine_ = (line > maxLine_) ? line : maxLine_;
                 remplissage_[line] += 1;
                 cellules_[line][colum]->setStatue(true);// toute est faux au debut
+                cellules_[line][colum]->setColor(itc->getColor());
                 if(remplissage_[line] == grilleWidth){
                     lines.push_back(line);
                     qDebug() << "ligne rempli: " << line;
                 }
             }
+            //tetraminos_.pop_back();
             int s = score_->text().split(" ")[0].toInt();
-            s++;
+            int l = lines_->text().split(" ")[0].toInt();
+
+            s += 1 + 10*lines.size();
+
+            l += lines.size();
             score_->setNum(s);
+            lines_->setNum(l);
+            qDebug() << remplissage_;
             for(std::vector<int>::iterator itc = lines.begin(); itc!=lines.end(); ++itc){
                 RemoveLine(*itc);
             }
-
+            qDebug() << remplissage_;
 
             if(endGame()){
+
                 qDebug() << "end game";
                 QMessageBox messageB;
                 messageB.setWindowTitle("End Game");
@@ -445,6 +442,8 @@ void GameControl::incrementZ(){
 
         // gestion des collision maintenand
         affichage->SetTetraminosVector(tetraminos_);
+        affichage->setParametersGrille(grilleWidth, grilleHeith, maxLine_);
+        affichage->setGrille(cellules_);
            // qDebug()<<getZmin()+tetraminos_.back().getTranslateZ();
    }
 }
@@ -477,18 +476,19 @@ void GameControl::RotateRequest(){
 void GameControl::MoveSlowOrSpeed()
 {
     if(pauseTime_==1000)
+    {
         pauseTime_=500;
+        level_->setNum(2);
+
+    }
+
     else if(pauseTime_==500)
-        pauseTime_=100;
+    {pauseTime_=100;    level_->setNum(3);
+}
     else
-        pauseTime_=1000;
+    { pauseTime_=1000;    level_->setNum(1);
+}
     timer->start(pauseTime_);
     qDebug()<<"la valleur du timer et de:  "<<pauseTime_;
 }
 
-void GameControl::MoveSlowOrSpeed(int time)
-{
-    pauseTime_=time;
-    timer->start(pauseTime_);
-    qDebug()<<"la valleur du timer et de:  "<<pauseTime_;
-}
